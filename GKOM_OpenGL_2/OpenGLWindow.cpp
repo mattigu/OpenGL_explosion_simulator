@@ -72,9 +72,8 @@ void OpenGLWindow::MainLoop()
     glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 
-    //Currently hardcoded since this doesn't pass the variables correcly somehow
-    //glm::vec3 explosionPoint = { 1.0f, 0.0f, 0.0f };
-    //glUniform3fv(transformationProgram.GetUniformID("explosionPoint"), 1, glm::value_ptr(explosionPoint));
+    glm::vec3 explosionPoint = { 1.0f, 0.0f, 0.0f };
+
 
     float uTime = 0.0f;
     while (!glfwWindowShouldClose(_window))
@@ -87,8 +86,9 @@ void OpenGLWindow::MainLoop()
 
         transformationProgram.Activate();
 
-        uTime = abs(sin(glfwGetTime()*2))*2;
+        uTime = abs(sin(glfwGetTime()*2));
 
+        glUniform3fv(transformationProgram.GetUniformID("explosionPoint"), 1, glm::value_ptr(explosionPoint));
         glUniform1f(transformationProgram.GetUniformID("uTime"), uTime);
         glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
