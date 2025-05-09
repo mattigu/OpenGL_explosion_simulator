@@ -7,6 +7,13 @@ OpenGLWindow::OpenGLWindow()
 {
 	_window = nullptr;
 
+    deltaTime = 0;
+
+    explosionPaused = false;
+    explosionSpeed = 1.0;
+    explosionTime = 0.0;
+
+
     objectVAO = 0;
     objectVAOPrimitive = 0;
     objectVAOVertexCount = 0;
@@ -18,6 +25,7 @@ OpenGLWindow::OpenGLWindow()
     cameraDirection = glm::vec3(0, 0, -1);
     cameraUp = glm::vec3(0, 1, 0);
     cameraSpeed = 0.05f;
+
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -72,24 +80,31 @@ void OpenGLWindow::MainLoop()
     glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
     glEnable(GL_DEPTH_TEST);
 
-    glm::vec3 explosionPoint = { 1.0f, 0.0f, 0.0f };
+    glm::vec3 explosionPoint = { 1.0f, -5.0f, 3.0f };
 
+    float lastFrameTime = 0.0;
 
-    float uTime = 0.0f;
+    explosionSpeed = 2.0;
+
     while (!glfwWindowShouldClose(_window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        float currentFrameTime = glfwGetTime();
+        deltaTime = currentFrameTime - lastFrameTime;
+        lastFrameTime = currentFrameTime;
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
         viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
 
         transformationProgram.Activate();
-
-        uTime = abs(sin(glfwGetTime()*2));
+     
+        if (!explosionPaused)
+            explosionTime += explosionSpeed * deltaTime;
 
         glUniform3fv(transformationProgram.GetUniformID("explosionPoint"), 1, glm::value_ptr(explosionPoint));
-        glUniform1f(transformationProgram.GetUniformID("uTime"), uTime);
+        glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
         glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
@@ -118,6 +133,13 @@ void OpenGLWindow::processInput()
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(_window, true);
+    }
+
+    // Explosion control. Right now it works badly since it checks every frame.
+    // If your click wasn't fast enough it will register as 2.
+    if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    {
+        explosionPaused = !explosionPaused;
     }
 
     // Camera movement

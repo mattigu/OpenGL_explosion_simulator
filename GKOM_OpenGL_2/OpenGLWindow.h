@@ -32,6 +32,12 @@ private:
 
 	Program transformationProgram;
 
+	float deltaTime;
+
+	float explosionTime;
+	float explosionSpeed;
+	bool explosionPaused;
+
 	GLuint objectVAO;
 	GLenum objectVAOPrimitive;
 	unsigned int objectVAOVertexCount;
