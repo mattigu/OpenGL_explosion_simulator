@@ -1,6 +1,7 @@
 #include "OpenGLWindow.h"
 #include "Camera.h"
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 OpenGLWindow::OpenGLWindow()
 {
@@ -34,6 +35,9 @@ bool OpenGLWindow::InitWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     _window = glfwCreateWindow((int)windowResolution.x, (int)windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
+    glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetCursorPosCallback(_window, mouse_callback);
+    glfwSetWindowUserPointer(_window, _camera.get());
 
     if (_window == NULL)
     {
@@ -137,4 +141,35 @@ void OpenGLWindow::processInput()
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+
+static float lastX = 400.0f;
+static float lastY = 300.0f;
+static bool firstMouse = true;
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) != GLFW_PRESS)
+    {
+        firstMouse = true;
+        return;
+    }
+
+    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    if (!camera) return;
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos;
+
+    lastX = xpos;
+    lastY = ypos;
+
+    camera->processMouseMovement(xoffset, yoffset);
 }
