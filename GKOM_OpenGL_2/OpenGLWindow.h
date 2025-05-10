@@ -11,6 +11,8 @@
 #include "Program.h"
 #include "Utilities.h"
 
+class Camera;
+
 class OpenGLWindow
 {
 public:
@@ -29,8 +31,17 @@ private:
 	void processInput();
 
 	GLFWwindow* _window;
+	std::unique_ptr<Camera> _camera;
 
 	Program transformationProgram;
+	Program staticProgram;
+
+	float deltaTime;
+
+	float explosionTime;
+	float explosionSpeed;
+	bool explosionPaused;
+	glm::vec3 explosionOrigin;
 
 	GLuint objectVAO;
 	GLenum objectVAOPrimitive;
@@ -42,10 +53,5 @@ private:
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;
 	glm::mat4 modelMatrix;
-
-	glm::vec3 cameraPosition;
-	glm::vec3 cameraDirection;
-	glm::vec3 cameraUp;
-	float cameraSpeed;
 
 };

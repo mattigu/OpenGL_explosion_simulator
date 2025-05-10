@@ -39,9 +39,9 @@ GLuint Program::GetUniformID(std::string uniformName)
 
 bool Program::Load(std::string vertexShaderFilePath, std::string fragmentShaderFilePath, std::string geometryShaderFilePath)
 {
-    GLuint vertexShader;
-    GLuint fragmentShader;
-    GLuint geometryShader;
+    GLuint vertexShader = 0;
+    GLuint fragmentShader = 0;
+    GLuint geometryShader = 0;
 
     std::string vertexShaderSource;
     std::string fragmentShaderSource;
@@ -51,7 +51,8 @@ bool Program::Load(std::string vertexShaderFilePath, std::string fragmentShaderF
 
     vertexShaderFilePath = _programsDirectory + "/" + vertexShaderFilePath;
     fragmentShaderFilePath = _programsDirectory + "/" + fragmentShaderFilePath;
-    geometryShaderFilePath = _programsDirectory + "/" + geometryShaderFilePath;
+    if (!geometryShaderFilePath.empty())
+        geometryShaderFilePath = _programsDirectory + "/" + geometryShaderFilePath;
 
     status = readFile(vertexShaderFilePath, vertexShaderSource);
 
@@ -69,14 +70,6 @@ bool Program::Load(std::string vertexShaderFilePath, std::string fragmentShaderF
         return false;
     }
 
-    status = readFile(geometryShaderFilePath, geometryShaderSource);
-
-    if (!status)
-    {
-        std::cerr << "Error loading geometry shader file " << geometryShaderFilePath << std::endl;
-        return false;
-    }
-
     status = compileShader(GL_VERTEX_SHADER, &vertexShader, vertexShaderSource);
 
     if (!status)
@@ -91,11 +84,21 @@ bool Program::Load(std::string vertexShaderFilePath, std::string fragmentShaderF
         return false;
     }
 
-    status = compileShader(GL_GEOMETRY_SHADER, &geometryShader, geometryShaderSource);
-
-    if (!status)
+    // Additional condition since geometry shader is optional. Not clean but it works for now
+    if (!geometryShaderFilePath.empty()) 
     {
-        return false;
+        status = readFile(geometryShaderFilePath, geometryShaderSource);
+        if (!status)
+        {
+            return false;
+        }
+
+        status = compileShader(GL_GEOMETRY_SHADER, &geometryShader, geometryShaderSource);
+
+        if (!status)
+        {
+            return false;
+        }
     }
 
     status = linkProgram(vertexShader, fragmentShader, geometryShader);
