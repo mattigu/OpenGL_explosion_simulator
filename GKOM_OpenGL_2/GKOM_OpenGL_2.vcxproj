@@ -149,12 +149,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Include\imgui\imgui.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\Include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Gui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Include\imgui\imconfig.h" />
+    <ClInclude Include="..\Include\imgui\imgui.h" />
+    <ClInclude Include="..\Include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="..\Include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\Include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\Include\imgui\imgui_internal.h" />
+    <ClInclude Include="..\Include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\Include\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\Include\imgui\imstb_truetype.h" />
+    <ClInclude Include="Gui.h" />
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Utilities.h" />

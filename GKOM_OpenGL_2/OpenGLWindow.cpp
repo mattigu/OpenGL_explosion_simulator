@@ -1,4 +1,9 @@
 #include "OpenGLWindow.h"
+#include "Gui.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
@@ -77,7 +82,7 @@ void OpenGLWindow::InitScene()
 
 void OpenGLWindow::MainLoop()
 {
-    glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
+    float testColor = 0.1f;
     glEnable(GL_DEPTH_TEST);
 
     glm::vec3 explosionPoint = { 1.0f, -5.0f, 3.0f };
@@ -86,13 +91,26 @@ void OpenGLWindow::MainLoop()
 
     explosionSpeed = 2.0;
 
+    Gui gui = Gui(_window);
+    gui.initImGui();
+
+
     while (!glfwWindowShouldClose(_window))
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         float currentFrameTime = glfwGetTime();
         deltaTime = currentFrameTime - lastFrameTime;
         lastFrameTime = currentFrameTime;
+
+        glfwPollEvents();
+        processInput();
+
+        gui.startNewFrame();
+
+        gui.createExplosionControlWindow(&testColor);
+
+        glClearColor(testColor, 0.2f, 0.3f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
@@ -107,7 +125,8 @@ void OpenGLWindow::MainLoop()
         glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
         glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-
+    
+        // Draw objects
         for (int i = -2; i <= 2; i++)
         {
             for (int j = -2; j <= 2; j++)
@@ -121,10 +140,9 @@ void OpenGLWindow::MainLoop()
             }
         }
 
-        processInput();
+        gui.renderGui();
 
         glfwSwapBuffers(_window);
-        glfwPollEvents();
     }
 }
 
