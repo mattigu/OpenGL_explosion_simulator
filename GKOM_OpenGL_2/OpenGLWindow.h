@@ -31,6 +31,7 @@ private:
 	GLFWwindow* _window;
 
 	Program transformationProgram;
+	Program staticProgram;
 
 	float deltaTime;
 

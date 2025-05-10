@@ -77,6 +77,7 @@ bool OpenGLWindow::InitWindow()
 void OpenGLWindow::InitScene()
 {
     transformationProgram.Load("transformationshader.vs", "transformationshader.fs", "geometryshader.gs");
+    staticProgram.Load("simpleshader.vs", "simpleshader.fs");
 
     objectVAO = LoadBox(&objectVAOPrimitive, &objectVAOVertexCount);
 }
@@ -132,6 +133,20 @@ void OpenGLWindow::MainLoop()
                 glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
             }
         }
+        
+        // Draw point marking the explosion origin
+        staticProgram.Activate();
+        float explosionOriginScale = 0.3f;
+
+        modelMatrix = glm::translate(glm::mat4(1.0f), explosionOrigin);
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(explosionOriginScale));
+
+        glUniformMatrix4fv(staticProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+        glUniformMatrix4fv(staticProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+        glUniformMatrix4fv(staticProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
+        glBindVertexArray(objectVAO);
+        glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
 
         gui.renderGui();
 
