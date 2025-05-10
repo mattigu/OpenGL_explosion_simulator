@@ -40,6 +40,8 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+		<Filter>Pliki źródłowe</Filter>
+	</ClCompile>
     <ClCompile Include="..\Include\imgui\imgui_widgets.cpp">
       <Filter>Pliki źródłowe\imgui</Filter>
     </ClCompile>
@@ -76,6 +78,8 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+		<Filter>Pliki nagłówkowe</Filter>
+	</ClInclude>
     <ClInclude Include="..\Include\imgui\imconfig.h">
       <Filter>Pliki nagłówkowe\imgui</Filter>
     </ClInclude>
