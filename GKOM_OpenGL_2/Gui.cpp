@@ -3,7 +3,7 @@
 Gui::Gui(GLFWwindow* window) : _window (window) {}
 
 
-Gui::~Gui() 
+Gui::~Gui()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -13,8 +13,7 @@ Gui::~Gui()
 void Gui::initImGui()
 {
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::CreateContext(); 
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -51,4 +50,9 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosi
 	
 
 	ImGui::End();
+}
+
+bool Gui::wantCaptureMouse()
+{
+	return ImGui::GetIO().WantCaptureMouse;
 }

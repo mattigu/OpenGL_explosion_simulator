@@ -10,6 +10,7 @@
 
 #include "Program.h"
 #include "Utilities.h"
+#include "Gui.h"
 
 class Camera;
 
@@ -22,6 +23,8 @@ public:
 
 	bool InitWindow();
 
+	void InitGui();
+
 	void InitScene();
 
 	void MainLoop();
@@ -32,6 +35,7 @@ private:
 
 	GLFWwindow* _window;
 	std::unique_ptr<Camera> _camera;
+	std::unique_ptr<Gui> _gui;
 
 	Program transformationProgram;
 	Program staticProgram;

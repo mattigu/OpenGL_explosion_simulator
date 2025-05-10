@@ -71,8 +71,12 @@ bool OpenGLWindow::InitWindow()
     }
 
     glfwSetFramebufferSizeCallback(_window, FramebufferSizeChangeCallback);
-
     return true;
+}
+
+void OpenGLWindow::InitGui()
+{
+    _gui = std::make_unique<Gui>(_window);
 }
 
 void OpenGLWindow::InitScene()
@@ -86,11 +90,9 @@ void OpenGLWindow::InitScene()
 void OpenGLWindow::MainLoop()
 {
     glEnable(GL_DEPTH_TEST);
-    Gui gui = Gui(_window);
-    gui.initImGui();
 
     float lastFrameTime = 0.0;
-
+    _gui->initImGui();
     while (!glfwWindowShouldClose(_window))
     {
         float currentFrameTime = glfwGetTime();
@@ -100,8 +102,8 @@ void OpenGLWindow::MainLoop()
         glfwPollEvents();
         processInput();
 
-        gui.startNewFrame();
-        gui.createExplosionControlWindow(&explosionSpeed, &explosionOrigin, &explosionPaused);
+        _gui->startNewFrame();
+        _gui->createExplosionControlWindow(&explosionSpeed, &explosionOrigin, &explosionPaused);
 
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
@@ -149,7 +151,7 @@ void OpenGLWindow::MainLoop()
         glBindVertexArray(objectVAO);
         glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
 
-        gui.renderGui();
+        _gui->renderGui();
 
         glfwSwapBuffers(_window);
     }
