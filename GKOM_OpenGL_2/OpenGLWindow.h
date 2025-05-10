@@ -34,6 +34,14 @@ private:
 	std::unique_ptr<Camera> _camera;
 
 	Program transformationProgram;
+	Program staticProgram;
+
+	float deltaTime;
+
+	float explosionTime;
+	float explosionSpeed;
+	bool explosionPaused;
+	glm::vec3 explosionOrigin;
 
 	GLuint objectVAO;
 	GLenum objectVAOPrimitive;

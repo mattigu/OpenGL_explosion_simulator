@@ -23,7 +23,7 @@ public:
 
 	GLuint GetUniformID(std::string uniformName);
 
-	bool Load(std::string vertexShaderFilePath, std::string fragmentShaderShaderPath, std::string geometryShaderShaderPath);
+	bool Load(std::string vertexShaderFilePath, std::string fragmentShaderShaderPath, std::string geometryShaderShaderPath = std::string());
 
 private:
 	
