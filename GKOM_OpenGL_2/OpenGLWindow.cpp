@@ -162,6 +162,16 @@ void OpenGLWindow::processInput()
         glfwSetWindowShouldClose(_window, true);
     }
 
+    if (glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+    else
+    {
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+
+
     // Explosion control. Right now it works badly since it checks every frame.
     // If your click wasn't fast enough it will register as 2.
     if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
