@@ -11,7 +11,7 @@ in VS_OUT {
 out vec3 gColor;
 
 uniform float explosionTime;
-uniform vec3 explosionPoint;
+uniform vec3 explosionOrigin;
 
 uniform mat4 uModelMatrix;
 uniform mat4 uViewMatrix;
@@ -20,7 +20,7 @@ uniform mat4 uProjectionMatrix;
 void main()
 {
     vec3 triangleCenter = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz) / 3.0;
-    vec3 explosionVector = normalize(triangleCenter - explosionPoint);
+    vec3 explosionVector = normalize(triangleCenter - explosionOrigin);
     vec3 offset = explosionTime * explosionVector;
 
 

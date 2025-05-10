@@ -37,6 +37,7 @@ private:
 	float explosionTime;
 	float explosionSpeed;
 	bool explosionPaused;
+	glm::vec3 explosionOrigin;
 
 	GLuint objectVAO;
 	GLenum objectVAOPrimitive;

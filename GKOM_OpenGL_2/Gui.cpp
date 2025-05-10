@@ -1,6 +1,5 @@
 #include "Gui.h"
 
-
 Gui::Gui(GLFWwindow* window) : _window (window) {}
 
 
@@ -34,9 +33,22 @@ void Gui::renderGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float *testColor)
+void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosionOrigin, bool* explosionPaused)
 {
 	ImGui::Begin("Explosion effects");
-	ImGui::SliderFloat("red", testColor, 0.f, 1.f);
+
+	ImGui::SliderFloat("Speed", explosionSpeed, -10.f, 10.f);
+
+	if (ImGui::Button(*explosionPaused ? "Resume" : "Pause")) {
+		*explosionPaused = !(*explosionPaused);
+	};
+
+
+	ImGui::Text("Explosion Origin");
+	ImGui::DragFloat("X", &explosionOrigin->x, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Y", &explosionOrigin->y, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Z", &explosionOrigin->z, 0.1f, -20.0f, 20.0f);
+	
+
 	ImGui::End();
 }

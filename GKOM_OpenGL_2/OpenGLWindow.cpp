@@ -17,6 +17,7 @@ OpenGLWindow::OpenGLWindow()
     explosionPaused = false;
     explosionSpeed = 1.0;
     explosionTime = 0.0;
+    explosionOrigin = { 0.0f, 0.0f, 0.0 };
 
 
     objectVAO = 0;
@@ -82,19 +83,12 @@ void OpenGLWindow::InitScene()
 
 void OpenGLWindow::MainLoop()
 {
-    float testColor = 0.1f;
     glEnable(GL_DEPTH_TEST);
-
-    glm::vec3 explosionPoint = { 1.0f, -5.0f, 3.0f };
-
-    float lastFrameTime = 0.0;
-
-    explosionSpeed = 2.0;
 
     Gui gui = Gui(_window);
     gui.initImGui();
 
-
+    float lastFrameTime = 0.0;
     while (!glfwWindowShouldClose(_window))
     {
         float currentFrameTime = glfwGetTime();
@@ -105,23 +99,22 @@ void OpenGLWindow::MainLoop()
         processInput();
 
         gui.startNewFrame();
+        gui.createExplosionControlWindow(&explosionSpeed, &explosionOrigin, &explosionPaused);
 
-        gui.createExplosionControlWindow(&testColor);
 
-        glClearColor(testColor, 0.2f, 0.3f, 0.0f);
+        glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        if (!explosionPaused)
+            explosionTime += explosionSpeed * deltaTime;
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
         viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
 
         transformationProgram.Activate();
-     
-        if (!explosionPaused)
-            explosionTime += explosionSpeed * deltaTime;
 
-        glUniform3fv(transformationProgram.GetUniformID("explosionPoint"), 1, glm::value_ptr(explosionPoint));
+        glUniform3fv(transformationProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
         glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
         glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));

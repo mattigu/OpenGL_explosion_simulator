@@ -179,6 +179,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\geometryshader.gs" />
+    <None Include="..\Resources\Shaders\simpleshader.fs" />
+    <None Include="..\Resources\Shaders\simpleshader.vs" />
     <None Include="..\Resources\Shaders\transformationshader.fs" />
     <None Include="..\Resources\Shaders\transformationshader.vs" />
   </ItemGroup>
