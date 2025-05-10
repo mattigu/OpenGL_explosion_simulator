@@ -45,7 +45,6 @@ void Camera::processMouseMovement(float xOffset, float yOffset)
 
 
     if (m_verticalAngle > 89.0f) m_verticalAngle = 89.0f;
-    if (m_horizontalAngle < -89.0f) m_horizontalAngle= -89.0f;
 
     updateCameraDirection();
 }
