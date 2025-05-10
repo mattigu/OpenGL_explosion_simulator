@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="..\Include\imgui\imgui.cpp" />
     <ClCompile Include="..\Include\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\Include\imgui\imgui_draw.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="..\Include\imgui\imconfig.h" />
     <ClInclude Include="..\Include\imgui\imgui.h" />
     <ClInclude Include="..\Include\imgui\imgui_impl_glfw.h" />
