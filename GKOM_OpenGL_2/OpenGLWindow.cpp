@@ -103,7 +103,7 @@ void OpenGLWindow::MainLoop()
         processInput();
 
         _gui->startNewFrame();
-        _gui->createExplosionControlWindow(&explosionSpeed, &explosionOrigin, &explosionPaused);
+        _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused);
 
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);

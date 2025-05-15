@@ -32,7 +32,7 @@ void Gui::renderGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosionOrigin, bool* explosionPaused)
+void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused)
 {
 	ImGui::Begin("Explosion effects");
 
@@ -40,6 +40,10 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosi
 
 	if (ImGui::Button(*explosionPaused ? "Resume" : "Pause")) {
 		*explosionPaused = !(*explosionPaused);
+	};
+
+	if (ImGui::Button("Reset")) {
+		*explosionTime = 0;
 	};
 
 
