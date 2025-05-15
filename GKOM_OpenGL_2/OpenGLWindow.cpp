@@ -52,7 +52,7 @@ bool OpenGLWindow::InitWindow()
     _window = glfwCreateWindow((int)windowResolution.x, (int)windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(_window, mouse_callback);
-    glfwSetWindowUserPointer(_window, _camera.get());
+    glfwSetWindowUserPointer(_window, this);
 
     if (_window == NULL)
     {
@@ -157,6 +157,16 @@ void OpenGLWindow::MainLoop()
     }
 }
 
+Camera* OpenGLWindow::getCamera()
+{
+    return _camera.get();
+}
+
+Gui* OpenGLWindow::getGui()
+{
+    return _gui.get();
+}
+
 void OpenGLWindow::processInput()
 {
     if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -219,8 +229,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
         return;
     }
 
-    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    OpenGLWindow* glWindow = static_cast<OpenGLWindow*>(glfwGetWindowUserPointer(window));
+    Camera* camera = glWindow->getCamera();
     if (!camera) return;
+    if (glWindow->getGui()->wantCaptureMouse()) return;
 
     if (firstMouse)
     {

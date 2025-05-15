@@ -29,6 +29,9 @@ public:
 
 	void MainLoop();
 
+	Camera* getCamera();
+	Gui* getGui();
+
 private:
 
 	void processInput();
