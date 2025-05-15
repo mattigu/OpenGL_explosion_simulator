@@ -20,9 +20,14 @@ uniform mat4 uProjectionMatrix;
 void main()
 {
     vec3 triangleCenter = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz) / 3.0;
-    vec3 explosionVector = normalize(triangleCenter - explosionOrigin);
-    vec3 offset = explosionTime * explosionVector;
+    vec3 explosionVector = triangleCenter - explosionOrigin;
 
+    float expRadius = explosionTime * 1;
+  
+    float distToShockWave = length(explosionVector) - expRadius;
+
+
+    vec3 offset = (-distToShockWave/2) * normalize(explosionVector) * max(0, -sign(distToShockWave));
 
     for (int i = 0; i < 3; ++i)
     {
