@@ -4,6 +4,6 @@ void InstancedMesh::setupMesh()
 {
 }
 
-void InstancedMesh::Draw()
+void InstancedMesh::Draw(Program& program)
 {
 }

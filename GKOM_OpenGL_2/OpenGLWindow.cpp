@@ -118,6 +118,7 @@ void OpenGLWindow::MainLoop()
 
         transformationProgram.Activate();
 
+        glUniform1i(transformationProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
         glUniform3fv(transformationProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
         glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
         glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));

@@ -2,9 +2,11 @@
 
 layout (location = 0) in vec3 attrPosition;
 layout (location = 1) in vec3 attrColor;
+layout (location = 2) in vec2 attrTextureCoords;
 
 out VS_OUT {
     vec3 Color;
+    vec2 TextureCoords;
 } vs_out;
 
 uniform mat4 uProjectionMatrix;

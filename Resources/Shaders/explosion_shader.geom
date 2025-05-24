@@ -6,10 +6,12 @@ layout(triangle_strip, max_vertices = 3) out;
 
 in VS_OUT {
     vec3 Color;
+    vec2 TextureCoords;
 } gs_in[];
 
 out GS_OUT {
     vec3 Color;
+    vec2 TextureCoords;
 } gs_out;
 
 
@@ -59,6 +61,7 @@ void main()
         vec3 newWorldPos = gl_in[i].gl_Position.xyz + offset;
         gl_Position = uProjectionMatrix * uViewMatrix * vec4(newWorldPos, 1.0);
         gs_out.Color = gs_in[i].Color;
+        gs_out.TextureCoords = gs_in[i].TextureCoords;
         EmitVertex();
     }
     EndPrimitive();
