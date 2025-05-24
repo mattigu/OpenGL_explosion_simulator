@@ -20,16 +20,39 @@ uniform mat4 uModelMatrix;
 uniform mat4 uViewMatrix;
 uniform mat4 uProjectionMatrix;
 
+
+const float G = 10.0;
+const float ground = -10.0;
+
+float expVelocity = 5.0; // How fast the explosion radius increases per second
+// Should probably be a uniform, but it currently it's equivalent to explosionTime anyway
+
+vec3 calculateNewCoordinates(vec3 velocity, vec3 point, float time)
+{
+    float xOffset = velocity.x * time;
+    float yOffset = velocity.y * time - 0.5 * G * time*time;
+    float zOffset = velocity.z * time;
+
+    yOffset = max(ground, point.y + yOffset) - point.y; // Clip to ground
+
+    vec3 offset = vec3(xOffset, yOffset, zOffset);
+    
+    return offset;
+}
+
+
 void main()
 {
     vec3 triangleCenter = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz) / 3.0;
-    vec3 explosionVector = triangleCenter - explosionOrigin;
+    vec3 expVector = triangleCenter - explosionOrigin;
 
-    float expRadius = explosionTime * 1;
-    float distToShockWave = length(explosionVector) - expRadius;
+    float expRadius = explosionTime * expVelocity;
+    float distToShockWave = length(expVector) - expRadius; // Distance of triangle center to shockwave
 
+    float timeSinceHit = abs(min(0, distToShockWave/expVelocity));
 
-    vec3 offset = (-distToShockWave/2) * normalize(explosionVector) * max(0, -sign(distToShockWave));
+    vec3 velocity = normalize(expVector) * max(0, -sign(distToShockWave)) * 10.0;
+    vec3 offset = calculateNewCoordinates(velocity, triangleCenter, timeSinceHit);
 
     for (int i = 0; i < 3; ++i)
     {
