@@ -5,10 +5,13 @@ layout(triangle_strip, max_vertices = 3) out;
 
 
 in VS_OUT {
-    vec3 vColor;
+    vec3 Color;
 } gs_in[];
 
-out vec3 gColor;
+out GS_OUT {
+    vec3 Color;
+} gs_out;
+
 
 uniform float explosionTime;
 uniform vec3 explosionOrigin;
@@ -23,7 +26,6 @@ void main()
     vec3 explosionVector = triangleCenter - explosionOrigin;
 
     float expRadius = explosionTime * 1;
-  
     float distToShockWave = length(explosionVector) - expRadius;
 
 
@@ -33,7 +35,7 @@ void main()
     {
         vec3 newWorldPos = gl_in[i].gl_Position.xyz + offset;
         gl_Position = uProjectionMatrix * uViewMatrix * vec4(newWorldPos, 1.0);
-        gColor = gs_in[i].vColor;
+        gs_out.Color = gs_in[i].Color;
         EmitVertex();
     }
     EndPrimitive();

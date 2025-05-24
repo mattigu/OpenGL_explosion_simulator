@@ -81,8 +81,8 @@ void OpenGLWindow::InitGui()
 
 void OpenGLWindow::InitScene()
 {
-    transformationProgram.Load("transformationshader.vs", "transformationshader.fs", "geometryshader.gs");
-    staticProgram.Load("simpleshader.vs", "simpleshader.fs");
+    transformationProgram.Load("explosion_shader.vert", "explosion_shader.frag", "explosion_shader.geom");
+    staticProgram.Load("simpleshader.vert", "simpleshader.frag");
 
     objectVAO = LoadBox(&objectVAOPrimitive, &objectVAOVertexCount);
 }

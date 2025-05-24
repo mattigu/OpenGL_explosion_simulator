@@ -181,11 +181,11 @@
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\geometryshader.gs" />
-    <None Include="..\Resources\Shaders\simpleshader.fs" />
-    <None Include="..\Resources\Shaders\simpleshader.vs" />
-    <None Include="..\Resources\Shaders\transformationshader.fs" />
-    <None Include="..\Resources\Shaders\transformationshader.vs" />
+    <None Include="..\Resources\Shaders\explosion_shader.geom" />
+    <None Include="..\Resources\Shaders\simpleshader.frag" />
+    <None Include="..\Resources\Shaders\simpleshader.vert" />
+    <None Include="..\Resources\Shaders\explosion_shader.frag" />
+    <None Include="..\Resources\Shaders\explosion_shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

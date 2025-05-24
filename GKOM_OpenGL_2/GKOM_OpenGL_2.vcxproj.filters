@@ -40,8 +40,8 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-		<Filter>Pliki źródłowe</Filter>
-	</ClCompile>
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
     <ClCompile Include="..\Include\imgui\imgui_widgets.cpp">
       <Filter>Pliki źródłowe\imgui</Filter>
     </ClCompile>
@@ -78,8 +78,8 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-		<Filter>Pliki nagłówkowe</Filter>
-	</ClInclude>
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
     <ClInclude Include="..\Include\imgui\imconfig.h">
       <Filter>Pliki nagłówkowe\imgui</Filter>
     </ClInclude>
@@ -112,19 +112,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\geometryshader.gs">
+    <None Include="..\Resources\Shaders\explosion_shader.geom">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\transformationshader.vs">
+    <None Include="..\Resources\Shaders\explosion_shader.vert">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\transformationshader.fs">
+    <None Include="..\Resources\Shaders\explosion_shader.frag">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simpleshader.fs">
+    <None Include="..\Resources\Shaders\simpleshader.frag">
       <Filter>Pliki zasobów\static_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simpleshader.vs">
+    <None Include="..\Resources\Shaders\simpleshader.vert">
       <Filter>Pliki zasobów\static_pipeline</Filter>
     </None>
   </ItemGroup>
