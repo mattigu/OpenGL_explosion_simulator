@@ -25,6 +25,12 @@
     <Filter Include="Pliki zasobów\static_pipeline">
       <UniqueIdentifier>{87b70535-20a2-4080-8698-f1d5144afdf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Mesh">
+      <UniqueIdentifier>{85478b20-1cc3-4d16-8fff-dc95fbbcaf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Mesh">
+      <UniqueIdentifier>{cfae653e-5850-4971-9a8d-47ca7b7fd797}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="Gui.cpp">
       <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedMesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularMesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +121,15 @@
     </ClInclude>
     <ClInclude Include="Gui.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularMesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedMesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
