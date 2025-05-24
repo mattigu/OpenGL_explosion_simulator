@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<Camera> _camera;
 	std::unique_ptr<Gui> _gui;
 
-	Program transformationProgram;
+	Program explosionProgram;
 	Program staticProgram;
 
 	float _deltaTime;

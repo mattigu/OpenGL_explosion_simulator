@@ -83,7 +83,7 @@ void OpenGLWindow::InitGui()
 
 void OpenGLWindow::InitScene()
 {
-    transformationProgram.Load("explosion_shader.vert", "explosion_shader.frag", "explosion_shader.geom");
+    explosionProgram.Load("explosion_shader.vert", "explosion_shader.frag", "explosion_shader.geom");
     staticProgram.Load("simpleshader.vert", "simpleshader.frag");
 
     objectVAO = LoadBox(&objectVAOPrimitive, &objectVAOVertexCount);
@@ -116,13 +116,13 @@ void OpenGLWindow::MainLoop()
 
         viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
 
-        transformationProgram.Activate();
+        explosionProgram.Activate();
 
-        glUniform1i(transformationProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
-        glUniform3fv(transformationProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
-        glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
-        glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-        glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+        glUniform1i(explosionProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
+        glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
+        glUniform1f(explosionProgram.GetUniformID("explosionTime"), explosionTime);
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
     
         // Draw objects
         for (int i = -2; i <= 2; i++)
@@ -131,7 +131,7 @@ void OpenGLWindow::MainLoop()
             {
                 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(i * 3.0f, j * 3.0f, 0.0f));
 
-                glUniformMatrix4fv(transformationProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+                glUniformMatrix4fv(explosionProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
                 glBindVertexArray(objectVAO);
                 glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
