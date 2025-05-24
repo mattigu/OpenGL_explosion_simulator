@@ -29,6 +29,9 @@ public:
 
 	void MainLoop();
 
+	void updateDeltaTime();
+	void toggleVsync();
+
 	Camera* getCamera();
 	Gui* getGui();
 
@@ -43,7 +46,8 @@ private:
 	Program transformationProgram;
 	Program staticProgram;
 
-	float deltaTime;
+	float _deltaTime;
+	bool _vsyncEnabled;
 
 	float explosionTime;
 	float explosionSpeed;

@@ -17,7 +17,7 @@ public:
 	void startNewFrame();
 	void renderGui();
 	void createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused);
-
+	void createPerformanceOverlay();
 	bool wantCaptureMouse();
 
 private:

@@ -14,7 +14,8 @@ OpenGLWindow::OpenGLWindow()
 {
 	_window = nullptr;
 
-    deltaTime = 0;
+    _deltaTime = 0;
+    _vsyncEnabled = false;
 
     explosionPaused = false;
     explosionSpeed = 1.0;
@@ -71,6 +72,7 @@ bool OpenGLWindow::InitWindow()
     }
 
     glfwSetFramebufferSizeCallback(_window, FramebufferSizeChangeCallback);
+    glfwSwapInterval(_vsyncEnabled ? 1 : 0);
     return true;
 }
 
@@ -91,26 +93,24 @@ void OpenGLWindow::MainLoop()
 {
     glEnable(GL_DEPTH_TEST);
 
-    float lastFrameTime = 0.0;
     _gui->initImGui();
     while (!glfwWindowShouldClose(_window))
     {
-        float currentFrameTime = glfwGetTime();
-        deltaTime = currentFrameTime - lastFrameTime;
-        lastFrameTime = currentFrameTime;
+        updateDeltaTime();
 
         glfwPollEvents();
         processInput();
 
         _gui->startNewFrame();
         _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused);
+        _gui->createPerformanceOverlay();
 
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (!explosionPaused)
-            explosionTime += explosionSpeed * deltaTime;
+            explosionTime += explosionSpeed * _deltaTime;
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
@@ -157,6 +157,21 @@ void OpenGLWindow::MainLoop()
     }
 }
 
+void OpenGLWindow::updateDeltaTime()
+{
+    static double lastFrameTime;
+
+    double currentFrameTime = glfwGetTime();
+    _deltaTime = currentFrameTime - lastFrameTime;
+    lastFrameTime = currentFrameTime;
+}
+
+void OpenGLWindow::toggleVsync()
+{
+    _vsyncEnabled = !_vsyncEnabled;
+    glfwSwapInterval(_vsyncEnabled ? 1 : 0);
+}
+
 Camera* OpenGLWindow::getCamera()
 {
     return _camera.get();
@@ -183,6 +198,7 @@ void OpenGLWindow::processInput()
         glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
+    // Explosion pause
     static bool wasSpacePressedLastFrame;
     bool spacePressedNow = glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS;
     if (spacePressedNow && !wasSpacePressedLastFrame)
@@ -191,25 +207,34 @@ void OpenGLWindow::processInput()
     }
     wasSpacePressedLastFrame = spacePressedNow;
 
+    static bool wasVPressedLastFrame;
+    bool vPressedNow = glfwGetKey(_window, GLFW_KEY_V) == GLFW_PRESS;
+    if (vPressedNow && !wasVPressedLastFrame)
+    {
+        toggleVsync();
+    }
+    wasVPressedLastFrame = vPressedNow;
+
+
     // Camera movement
 
     if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Forward);
+        _camera->processKeyboard(CameraMovement::Forward, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Backward);
+        _camera->processKeyboard(CameraMovement::Backward, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Left);
+        _camera->processKeyboard(CameraMovement::Left, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Right);
+        _camera->processKeyboard(CameraMovement::Right, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_Q) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Down);
+        _camera->processKeyboard(CameraMovement::Down, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_E) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Up);
+        _camera->processKeyboard(CameraMovement::Up, _deltaTime);
 }
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height)

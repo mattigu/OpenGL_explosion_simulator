@@ -56,6 +56,25 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTi
 	ImGui::End();
 }
 
+void Gui::createPerformanceOverlay()
+{
+	float fps = ImGui::GetIO().Framerate;
+	float frameTime = 1000.0f / fps;
+
+	ImGuiWindowFlags windowFlags =
+		ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoFocusOnAppearing |
+		ImGuiWindowFlags_NoNav;
+
+	ImGui::Begin("Performance stats", nullptr, windowFlags);
+
+	ImGui::Text("FPS: %.1f", fps);
+	ImGui::Text("Frame Time: %.2f ms", frameTime);
+
+	ImGui::End();
+}
+
 bool Gui::wantCaptureMouse()
 {
 	return ImGui::GetIO().WantCaptureMouse;
