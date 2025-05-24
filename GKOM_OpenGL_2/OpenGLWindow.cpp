@@ -183,13 +183,13 @@ void OpenGLWindow::processInput()
         glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
-
-    // Explosion control. Right now it works badly since it checks every frame.
-    // If your click wasn't fast enough it will register as 2.
-    if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    static bool wasSpacePressedLastFrame;
+    bool spacePressedNow = glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS;
+    if (spacePressedNow && !wasSpacePressedLastFrame)
     {
         explosionPaused = !explosionPaused;
     }
+    wasSpacePressedLastFrame = spacePressedNow;
 
     // Camera movement
 
