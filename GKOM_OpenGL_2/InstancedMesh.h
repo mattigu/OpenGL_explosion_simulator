@@ -8,9 +8,11 @@ private:
 	std::vector<glm::mat4> _modelMatrices;
 
 public:
-	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices)
-		: Mesh(vertices, indices, diffuseTexture), _modelMatrices(modelMatrices) {};
+	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const std::vector<glm::mat4>& modelMatrices)
+		: Mesh(vertices, indices, diffuseTexture), _modelMatrices(modelMatrices) {
+		setupMesh();
+	};
 
-	void setupMesh() override;  
-	void Draw(Program& program) override;
+	void setupMesh() final override;  
+	void Draw(Program& program) final override;
 };

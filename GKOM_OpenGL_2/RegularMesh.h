@@ -4,9 +4,11 @@
 
 class RegularMesh : public Mesh {
 public:
-	RegularMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
-		: Mesh(vertices, indices, diffuseTexture) {};
+	RegularMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
+		: Mesh(vertices, indices, diffuseTexture) {
+		setupMesh();
+	};
 
-	void setupMesh() override;
-	void Draw(Program& program) override;
+	void setupMesh() final override;
+	void Draw(Program& program) final override;
 };

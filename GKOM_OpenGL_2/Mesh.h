@@ -24,19 +24,17 @@ struct Texture {
 
 // A mesh with instancing requires a different setup
 
-// Could also store the shadader program to manually 
+// Should probably use std::move to not copy the data. I'll do that once this simple version works
 class Mesh {
 protected:
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture diffuseTexture)
-		: _vertices(vertices), _indices(indices), _diffuseTexture(diffuseTexture) {
-		setupMesh();
-	};
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
+		: _vertices(vertices), _indices(indices), _diffuseTexture(diffuseTexture) {};
 
 	std::vector<Vertex> _vertices;
 	std::vector<unsigned int> _indices;
 	Texture _diffuseTexture;
 
-	GLuint VBO, EBO, VAO;
+	GLuint VBO = 0, EBO = 0, VAO = 0;
 
 public:
 	virtual void setupMesh() = 0;
