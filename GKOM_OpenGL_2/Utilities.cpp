@@ -93,62 +93,62 @@ GLuint LoadBox(GLenum* primitive, unsigned int* count)
     colors.push_back(glm::vec3(0.0f, 1.0f, 1.0f));
     colors.push_back(glm::vec3(0.0f, 1.0f, 1.0f));
 
-    std::vector<glm::vec3> normals;
-    // Front face
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    // Back face
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    // Top face
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    // Bottom face
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    // Left face
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    // Right face
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //std::vector<glm::vec3> normals;
+    //// Front face
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
+    //// Back face
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
+    //// Top face
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
+    //// Bottom face
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
+    //// Left face
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
+    //// Right face
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
+    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
 
     struct Vertex
     {
         glm::vec3 position;
         glm::vec3 color;
-        glm::vec3 normal;
+        glm::vec2 textCoords;
     };
 
     std::vector<Vertex> BufferData;
 
     for (size_t i = 0; i < positions.size(); i++)
     {
-        BufferData.push_back({ positions[i], colors[i], normals[i] });
+        BufferData.push_back({ positions[i], colors[i], glm::vec2(0.0, 0.0)});
     }
 
     glGenBuffers(1, &VBO);
