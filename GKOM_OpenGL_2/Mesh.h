@@ -24,11 +24,12 @@ struct Texture {
 
 // A mesh with instancing requires a different setup
 
-// Should probably use std::move to not copy the data. I'll do that once this simple version works
 class Mesh {
 protected:
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
-		: _vertices(vertices), _indices(indices), _diffuseTexture(diffuseTexture) {};
+	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture)
+		: _vertices(std::move(vertices)), 
+		_indices(std::move(indices)), 
+		_diffuseTexture(std::move(diffuseTexture)) {};
 
 	std::vector<Vertex> _vertices;
 	std::vector<unsigned int> _indices;
