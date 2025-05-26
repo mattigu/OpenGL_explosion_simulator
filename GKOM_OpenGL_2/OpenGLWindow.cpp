@@ -1,10 +1,13 @@
 #include "OpenGLWindow.h"
 #include "Camera.h"
 #include "Gui.h"
+#include "Utilities.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "RegularMesh.h"
+#include "Mesh.h"
 
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
@@ -94,6 +97,7 @@ void OpenGLWindow::MainLoop()
     glEnable(GL_DEPTH_TEST);
 
     _gui->initImGui();
+    RegularMesh mesh = LoadBoxMesh();
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -135,6 +139,7 @@ void OpenGLWindow::MainLoop()
 
                 glBindVertexArray(objectVAO);
                 glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
+                //mesh.Draw(explosionProgram); Draw with mesh class
             }
         }
         

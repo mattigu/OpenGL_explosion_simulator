@@ -5,12 +5,12 @@ layout(triangle_strip, max_vertices = 3) out;
 
 
 in VS_OUT {
-    vec3 Color;
+    vec4 Color;
     vec2 TextureCoords;
 } gs_in[];
 
 out GS_OUT {
-    vec3 Color;
+    vec4 Color;
     vec2 TextureCoords;
 } gs_out;
 
