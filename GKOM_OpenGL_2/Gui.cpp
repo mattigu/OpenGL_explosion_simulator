@@ -10,7 +10,7 @@ Gui::~Gui()
 	ImGui::DestroyContext();
 }
 
-void Gui::initImGui()
+void Gui::initImGui() const
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext(); 
@@ -19,20 +19,20 @@ void Gui::initImGui()
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void Gui::startNewFrame()
+void Gui::startNewFrame() const
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void Gui::renderGui()
+void Gui::renderGui() const
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused)
+void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused) const
 {
 	ImGui::Begin("Explosion effects");
 
@@ -56,7 +56,7 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTi
 	ImGui::End();
 }
 
-void Gui::createPerformanceOverlay()
+void Gui::createPerformanceOverlay() const
 {
 	float fps = ImGui::GetIO().Framerate;
 	float frameTime = 1000.0f / fps;
@@ -75,7 +75,7 @@ void Gui::createPerformanceOverlay()
 	ImGui::End();
 }
 
-bool Gui::wantCaptureMouse()
+bool Gui::wantCaptureMouse() const
 {
 	return ImGui::GetIO().WantCaptureMouse;
 }

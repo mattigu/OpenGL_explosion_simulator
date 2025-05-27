@@ -14,5 +14,5 @@ public:
 	};
 
 	void setupMesh() final override;  
-	void Draw(Program& program) final override;
+	void Draw(Program& program) const final override;
 };

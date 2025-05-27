@@ -39,5 +39,8 @@ protected:
 
 public:
 	virtual void setupMesh() = 0;
-	virtual void Draw(Program& program) = 0;
+	virtual void Draw(Program& program) const = 0;
 };
+
+// Hold 1 modelMatrix, which the model can apply new tranformations to. Render using the modelMatrix by default. 
+// Maybe separate function to draw with a custom one?

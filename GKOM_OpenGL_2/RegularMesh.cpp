@@ -30,7 +30,7 @@ void RegularMesh::setupMesh()
     glBindVertexArray(0);
 }
 
-void RegularMesh::Draw(Program& program)
+void RegularMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
         glActiveTexture(GL_TEXTURE0);
