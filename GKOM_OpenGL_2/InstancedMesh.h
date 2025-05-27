@@ -12,9 +12,9 @@ private:
 public:
 	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const std::vector<glm::mat4>& modelMatrices)
 		: Mesh(vertices, indices, diffuseTexture), _modelMatrices(modelMatrices) {
-		setupMesh();
+		setupInstancing();
 	};
 
-	void setupMesh() final override;  
 	void Draw(Program& program) const final override;
+	// Add functions to modify and update the buffer
 };

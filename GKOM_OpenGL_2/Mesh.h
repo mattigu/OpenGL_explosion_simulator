@@ -26,11 +26,15 @@ struct Texture {
 // A mesh with instancing requires a different setup
 
 class Mesh {
+private:
+	void setupMesh();
 protected:
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture)
 		: _vertices(std::move(vertices)), 
 		_indices(std::move(indices)), 
-		_diffuseTexture(std::move(diffuseTexture)) {};
+		_diffuseTexture(std::move(diffuseTexture)) {
+		setupMesh();
+	};
 
 	std::vector<Vertex> _vertices;
 	std::vector<unsigned int> _indices;
@@ -39,7 +43,6 @@ protected:
 	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
 
 public:
-	virtual void setupMesh() = 0;
 	virtual void Draw(Program& program) const = 0;
 };
 
