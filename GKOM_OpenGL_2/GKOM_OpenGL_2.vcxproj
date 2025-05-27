@@ -161,11 +161,14 @@
     <ClCompile Include="..\Include\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="InstancedModel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="InstancedMesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RegularMesh.cpp" />
+    <ClCompile Include="RegularModel.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,10 +184,13 @@
     <ClInclude Include="..\Include\imgui\imstb_truetype.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="InstancedMesh.h" />
+    <ClInclude Include="InstancedModel.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="RegularMesh.h" />
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="Program.h" />
+    <ClInclude Include="RegularModel.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
