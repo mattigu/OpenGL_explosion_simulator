@@ -35,7 +35,7 @@ protected:
 	std::vector<unsigned int> _indices;
 	Texture _diffuseTexture;
 
-	GLuint VBO = 0, EBO = 0, VAO = 0;
+	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
 
 public:
 	virtual void setupMesh() = 0;
