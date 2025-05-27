@@ -139,7 +139,10 @@ void OpenGLWindow::MainLoop()
 
                 glBindVertexArray(objectVAO);
                 glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
-                //mesh.Draw(explosionProgram); Draw with mesh class
+
+                // Draw with the mesh class.
+                //mesh.setModelMatrix(modelMatrix);
+                //mesh.Draw(explosionProgram); 
             }
         }
         
