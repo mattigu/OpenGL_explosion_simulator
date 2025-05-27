@@ -1,6 +1,5 @@
 #pragma once
 
-#include <glm/gtc/type_ptr.hpp>
 #include "Mesh.h"
 
 class RegularMesh : public Mesh {

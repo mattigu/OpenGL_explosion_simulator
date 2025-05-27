@@ -7,7 +7,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "RegularMesh.h"
-#include "Mesh.h"
+#include "InstancedMesh.h"
+
 
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
@@ -98,6 +99,7 @@ void OpenGLWindow::MainLoop()
 
     _gui->initImGui();
     RegularMesh mesh = LoadBoxMesh();
+    InstancedMesh imesh = LoadBoxMeshInstanced();
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -128,7 +130,6 @@ void OpenGLWindow::MainLoop()
         glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
     
-        // Draw objects
         for (int i = -2; i <= 2; i++)
         {
             for (int j = -2; j <= 2; j++)
@@ -145,6 +146,8 @@ void OpenGLWindow::MainLoop()
                 //mesh.Draw(explosionProgram); 
             }
         }
+        // Draw instanced
+        //imesh.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();

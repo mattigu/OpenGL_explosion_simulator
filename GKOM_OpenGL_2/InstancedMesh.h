@@ -5,7 +5,9 @@
 // Could separate InstancedMesh into variations which require: vec3 displacement or a full model matrices
 class InstancedMesh : public Mesh {
 private:
+	GLuint _instanceVBO;
 	std::vector<glm::mat4> _modelMatrices;
+	void setupInstancing();
 
 public:
 	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const std::vector<glm::mat4>& modelMatrices)
