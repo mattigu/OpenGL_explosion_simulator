@@ -9,12 +9,15 @@ private:
 	std::vector<glm::mat4> _modelMatrices;
 	void setupInstancing();
 
-public:
-	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const std::vector<glm::mat4>& modelMatrices)
-		: Mesh(vertices, indices, diffuseTexture), _modelMatrices(modelMatrices) {
+public: // change to std::move
+	InstancedMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices)
+		: Mesh(std::move(vertices), std::move(indices), std::move(diffuseTexture)),
+			_modelMatrices(std::move(modelMatrices)) {
 		setupInstancing();
 	};
 
 	void Draw(Program& program) const final override;
-	// Add functions to modify and update the buffer
+	// Add functions to modify and update the buffer - note below 
+	//glBindBuffer(GL_ARRAY_BUFFER, _instancevbo);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(newData), newData);
 };
