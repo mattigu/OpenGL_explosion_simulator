@@ -6,9 +6,9 @@
 #include "Mesh.h"
 #include "Program.h"
 
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
+#include <assimp/Importer.hpp>      
+#include <assimp/scene.h>           
+#include <assimp/postprocess.h>     
 
 class Model
 {
@@ -17,14 +17,14 @@ protected:
 	std::vector<std::shared_ptr<Mesh>> meshes;
 	std::string directory;
 	
-	void loadModel(std::string const& path);
-	// assimp params below so keeping them empty 
-	void processNode(); 
-	Mesh processMesh();
-	std::vector<Texture> loadMaterialTextures();
-	unsigned int TextureFromFile();
-public:
-	virtual void Draw(Program& program);
+	Model(const std::string& path);
 
+	void loadModel(std::string const& path);
+	void processNode(aiNode* node, const aiScene* scene);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+	static unsigned int TextureFromFile(const char* path, const std::string& directory);
+public:
+	virtual void Draw(Program& program) const;
 };
 
