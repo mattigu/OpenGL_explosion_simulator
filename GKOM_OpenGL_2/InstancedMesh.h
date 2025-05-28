@@ -11,6 +11,7 @@ private:
 	void updateInstanceVBO() const;
 
 public: // change to std::move
+	virtual ~InstancedMesh() override;
 	InstancedMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices)
 		: Mesh(std::move(vertices), std::move(indices), std::move(diffuseTexture)),
 			_modelMatrices(std::move(modelMatrices)) {

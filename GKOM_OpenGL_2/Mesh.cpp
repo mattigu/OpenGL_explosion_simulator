@@ -1,5 +1,14 @@
 #include "Mesh.h"
 
+
+Mesh::~Mesh()
+{
+    glDeleteVertexArrays(1, &_VAO);
+    glDeleteBuffers(1, &_VBO);
+    glDeleteBuffers(1, &_EBO);
+    _VAO = _VBO = _EBO = 0;
+}
+
 void Mesh::setupMesh()
 {
     glGenVertexArrays(1, &_VAO);

@@ -1,5 +1,11 @@
 #include "InstancedMesh.h"
 
+InstancedMesh::~InstancedMesh()
+{
+    glDeleteBuffers(1, &_instanceVBO);
+    _instanceVBO = 0;
+}
+
 void InstancedMesh::setupInstancing()
 {
     glGenBuffers(1, &_instanceVBO);

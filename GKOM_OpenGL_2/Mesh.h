@@ -29,6 +29,7 @@ class Mesh {
 private:
 	void setupMesh();
 protected:
+	virtual ~Mesh();
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture)
 		: _vertices(std::move(vertices)), 
 		_indices(std::move(indices)), 
