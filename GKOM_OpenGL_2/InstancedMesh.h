@@ -8,6 +8,7 @@ private:
 	GLuint _instanceVBO;
 	std::vector<glm::mat4> _modelMatrices;
 	void setupInstancing();
+	void updateInstanceVBO() const;
 
 public: // change to std::move
 	InstancedMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices)
@@ -17,7 +18,14 @@ public: // change to std::move
 	};
 
 	void Draw(Program& program) const final override;
-	// Add functions to modify and update the buffer - note below 
-	//glBindBuffer(GL_ARRAY_BUFFER, _instancevbo);
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(newData), newData);
+	virtual void applyTransformation(const glm::mat4& transform) final override;
+	void setModelMatrices(const std::vector<glm::mat4>& modelMatrices);
 };
+
+// Could add something like this later to modify singular model matrix
+
+//void InstancedMesh::updateSingleInstance(int index) const
+//{
+//	glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+//	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &_modelMatrices[index]);
+//}

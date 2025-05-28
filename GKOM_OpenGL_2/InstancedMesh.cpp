@@ -25,6 +25,12 @@ void InstancedMesh::setupInstancing()
     glBindVertexArray(0);
 }
 
+void InstancedMesh::updateInstanceVBO() const
+{
+    glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], GL_STATIC_DRAW);
+}
+
 void InstancedMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
@@ -40,3 +46,19 @@ void InstancedMesh::Draw(Program& program) const
     glUniform1i(program.GetUniformID("useInstancing"), 0);
     glBindVertexArray(0);
 }
+
+void InstancedMesh::applyTransformation(const glm::mat4& transform)
+{
+    for (auto& m : _modelMatrices) {
+        m = transform * m;
+    }
+    updateInstanceVBO();
+}
+
+void InstancedMesh::setModelMatrices(const std::vector<glm::mat4>& modelMatrices)
+{
+    _modelMatrices = modelMatrices;
+    updateInstanceVBO();
+}
+
+

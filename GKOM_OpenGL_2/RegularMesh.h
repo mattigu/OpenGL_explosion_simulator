@@ -12,6 +12,7 @@ public:
 
 	void Draw(Program& program) const final override;
 
-	void setModelMatrix(glm::mat4 newModel);
-	// probably some applyTransformation function for the Model to affect things here
+	virtual void applyTransformation(const glm::mat4& transform) override final;
+	void setModelMatrix(const glm::mat4& newModel);
 };
+

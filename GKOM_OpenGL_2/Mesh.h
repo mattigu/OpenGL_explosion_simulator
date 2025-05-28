@@ -44,7 +44,5 @@ protected:
 
 public:
 	virtual void Draw(Program& program) const = 0;
+	virtual void applyTransformation(const glm::mat4& transform) = 0;
 };
-
-// Hold 1 modelMatrix, which the model can apply new tranformations to. Render using the modelMatrix by default. 
-// Maybe separate function to draw with a custom one?
