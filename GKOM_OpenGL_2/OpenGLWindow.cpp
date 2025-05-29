@@ -100,6 +100,7 @@ void OpenGLWindow::MainLoop()
     _gui->initImGui();
     RegularMesh mesh = LoadBoxMesh();
     InstancedMesh imesh = LoadBoxMeshInstanced();
+    //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();

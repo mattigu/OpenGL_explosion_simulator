@@ -8,6 +8,8 @@ InstancedMesh::~InstancedMesh()
 
 void InstancedMesh::setupInstancing()
 {
+    glBindVertexArray(_VAO);
+
     glGenBuffers(1, &_instanceVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
     glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], GL_STATIC_DRAW);
@@ -37,6 +39,12 @@ void InstancedMesh::updateInstanceVBO() const
     glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], GL_STATIC_DRAW);
 }
 
+InstancedMesh InstancedMesh::fromRegularMesh(RegularMesh& mesh, std::vector<glm::mat4> modelMatrices)
+{
+    auto[vao, vbo, ebo] = mesh.releaseBuffers();
+    return InstancedMesh(vao, vbo, ebo, mesh.getTexture(), mesh.getNumIndices(), std::move(modelMatrices));
+}
+
 void InstancedMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
@@ -47,7 +55,7 @@ void InstancedMesh::Draw(Program& program) const
     glUniform1i(program.GetUniformID("useInstancing"), 1);
 
     glBindVertexArray(_VAO);
-    glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(_indices.size()), GL_UNSIGNED_INT, 0, _modelMatrices.size());
+    glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(_numIndices), GL_UNSIGNED_INT, 0, _modelMatrices.size());
 
     glUniform1i(program.GetUniformID("useInstancing"), 0);
     glBindVertexArray(0);
