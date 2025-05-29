@@ -102,7 +102,9 @@ void OpenGLWindow::MainLoop()
     InstancedMesh imesh = LoadBoxMeshInstanced();
     //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
     fs::path ratPath = "RAT/RAT.fbx";
+    //fs::path chiyoPath = "chiyo/chiyo.obj";
     RegularModel rat = RegularModel(ratPath);
+    //RegularModel chiyo = RegularModel(chiyoPath);
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -151,7 +153,9 @@ void OpenGLWindow::MainLoop()
         }
         // Draw instanced
         //imesh.Draw(explosionProgram);
-        rat.Draw(explosionProgram);
+        // Draw loaded models
+        //rat.Draw(explosionProgram);
+        //chiyo.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();

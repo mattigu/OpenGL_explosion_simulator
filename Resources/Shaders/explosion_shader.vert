@@ -19,6 +19,7 @@ uniform mat4 uModelMatrix;
 void main()
 {
     vs_out.Color = attrColor;
+    vs_out.TextureCoords = attrTextureCoords;
     mat4 modelMatrix = useInstancing ? attrInstanceMatrix : uModelMatrix;
 
     gl_Position = modelMatrix * vec4(attrPosition, 1.0);
