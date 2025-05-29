@@ -170,6 +170,7 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RegularMesh.cpp" />
     <ClCompile Include="RegularModel.cpp" />
+    <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@ std::tuple<GLuint, GLuint, GLuint> RegularMesh::releaseBuffers()
 void RegularMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
+        glUniform1i(program.GetUniformID("useTexture"), 1);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture.id);
         glUniform1i(program.GetUniformID("diffuseTexture"), 0);
@@ -19,6 +20,7 @@ void RegularMesh::Draw(Program& program) const
     glBindVertexArray(_VAO);
     glDrawElements(GL_TRIANGLES, (_numIndices), GL_UNSIGNED_INT, 0);
 
+    glUniform1i(program.GetUniformID("useTexture"), 0);
 
     glBindVertexArray(0);
 }

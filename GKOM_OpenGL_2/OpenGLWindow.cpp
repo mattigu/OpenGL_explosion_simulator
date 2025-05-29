@@ -6,8 +6,8 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include "RegularMesh.h"
-#include "InstancedMesh.h"
+
+#include "RegularModel.h"
 
 
 
@@ -101,6 +101,8 @@ void OpenGLWindow::MainLoop()
     RegularMesh mesh = LoadBoxMesh();
     InstancedMesh imesh = LoadBoxMeshInstanced();
     //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
+    fs::path ratPath = "RAT/RAT.fbx";
+    RegularModel rat = RegularModel(ratPath);
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -149,6 +151,7 @@ void OpenGLWindow::MainLoop()
         }
         // Draw instanced
         //imesh.Draw(explosionProgram);
+        rat.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();

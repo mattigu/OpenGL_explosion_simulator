@@ -37,6 +37,9 @@
     <Filter Include="Pliki nagłówkowe\Model">
       <UniqueIdentifier>{7a23f2d5-214c-43a3-87a1-1ad71ae4b352}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\stb_image">
+      <UniqueIdentifier>{e7833e76-be40-47f5-9ecd-d37bb914cc07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Pliki źródłowe\stb_image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

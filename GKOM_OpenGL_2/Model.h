@@ -2,29 +2,40 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "Mesh.h"
+#include "RegularMesh.h"
+
 #include "Program.h"
+
+#include <stb_image.h>
 
 #include <assimp/Importer.hpp>      
 #include <assimp/scene.h>           
 #include <assimp/postprocess.h>     
 
+namespace fs = std::filesystem;
+
 class Model
 {
+private:
+	inline static const fs::path _modelsDirectory = "../Resources/Models/"; // Directory where all models are stored
 protected:
-	std::vector<Texture> textures_loaded;
-	std::vector<std::shared_ptr<Mesh>> meshes;
-	std::string directory;
+	std::vector<std::shared_ptr<Mesh>> _meshes;
+	fs::path _directory; // This model's directory
 	
-	Model(const std::string& path);
+	Model(const fs::path& path);
 
-	void loadModel(std::string const& path);
+	void loadModel(const fs::path& path);
 	void processNode(aiNode* node, const aiScene* scene);
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-	static unsigned int TextureFromFile(const char* path, const std::string& directory);
+	std::shared_ptr<Mesh> processMesh(aiMesh* mesh, const aiScene* scene);
+
+	Texture loadDiffuseTexture(aiMaterial* mat) const;
+	static GLuint TextureFromFile(const fs::path& path);
 public:
-	virtual void Draw(Program& program) const;
+	void Draw(Program& program) const;
+
+	//virtual void applyTransformation(const glm::mat4& transform) = 0;
 };
 

@@ -19,8 +19,6 @@ struct Vertex {
 
 struct Texture {
 	GLuint id = 0;
-	std::string type;
-	std::string path;
 };
 
 // A mesh with instancing requires a different setup

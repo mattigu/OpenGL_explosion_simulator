@@ -238,7 +238,7 @@ RegularMesh LoadBoxMesh()
             base + 0, base + 2, base + 3
             });
     }
-    Texture text = Texture{0, "", ""};
+    Texture text;
     RegularMesh mesh(vertices, indices, text);
     return mesh;
 }
@@ -317,7 +317,7 @@ InstancedMesh LoadBoxMeshInstanced()
         }
     }
 
-    Texture text = Texture{ 0, "", "" };
+    Texture text;
     InstancedMesh mesh(vertices, indices, text, instanceMatrices);
     return mesh;
 }
