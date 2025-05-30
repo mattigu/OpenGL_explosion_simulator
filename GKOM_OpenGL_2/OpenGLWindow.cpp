@@ -33,7 +33,7 @@ OpenGLWindow::OpenGLWindow()
     objectVAOVertexCount = 0;
 
     windowResolution = glm::vec2(800, 600);
-    fieldOfView = 45;
+    fieldOfView = 60;
 
     _camera = std::make_unique<Camera>(glm::vec3(0, 0, 20), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
@@ -56,6 +56,7 @@ bool OpenGLWindow::InitWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     _window = glfwCreateWindow((int)windowResolution.x, (int)windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
+    glfwSetWindowAspectRatio(_window, 4, 3);
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(_window, mouse_callback);
     glfwSetWindowUserPointer(_window, this);
