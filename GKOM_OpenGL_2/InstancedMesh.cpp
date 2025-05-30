@@ -48,6 +48,7 @@ InstancedMesh InstancedMesh::fromRegularMesh(RegularMesh& mesh, std::vector<glm:
 void InstancedMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
+        glUniform1i(program.GetUniformID("useTexture"), 1);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture.id);
         glUniform1i(program.GetUniformID("diffuseTexture"), 0);
@@ -57,6 +58,7 @@ void InstancedMesh::Draw(Program& program) const
     glBindVertexArray(_VAO);
     glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(_numIndices), GL_UNSIGNED_INT, 0, _modelMatrices.size());
 
+    glUniform1i(program.GetUniformID("useTexture"), 0);
     glUniform1i(program.GetUniformID("useInstancing"), 0);
     glBindVertexArray(0);
 }

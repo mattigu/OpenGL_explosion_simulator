@@ -1,21 +1,17 @@
 #include "Model.h"
 
-Model::Model(const fs::path& relativePath)
-{
-	loadModel(_modelsDirectory / relativePath);
-}
-
 void Model::loadModel(const fs::path& path)
 {
+    fs::path fullPath = _modelsDirectory / path;
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path.string(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+    const aiScene* scene = importer.ReadFile(fullPath.string(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
         std::cerr << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
         return;
     }
-    _directory = path.parent_path();
+    _directory = fullPath.parent_path();
 
     processNode(scene->mRootNode, scene);
 }
@@ -26,7 +22,7 @@ void Model::processNode(aiNode* node, const aiScene* scene)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        _meshes.push_back(processMesh(mesh, scene));
+        processMesh(mesh, scene);
     }
     // process children nodes
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -35,13 +31,14 @@ void Model::processNode(aiNode* node, const aiScene* scene)
     }
 }
 
-std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
+void Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
 
-    // walk through each of the mesh's vertices
+    vertices.reserve(mesh->mNumVertices);
+    indices.reserve(mesh->mNumFaces * 3);
+
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
@@ -90,8 +87,7 @@ std::shared_ptr<Mesh> Model::processMesh(aiMesh* mesh, const aiScene* scene)
         diffuseTexture = loadDiffuseTexture(material);
     }
 
-    // return a mesh object created from the extracted mesh data
-    return std::make_shared<RegularMesh>(vertices, indices, diffuseTexture);
+    createMesh(vertices, indices, diffuseTexture);
 }
 
 Texture Model::loadDiffuseTexture(aiMaterial* mat) const
@@ -146,9 +142,3 @@ GLuint Model::TextureFromFile(const fs::path& path)
     return textureID;
 }
 
-void Model::Draw(Program& program) const
-{
-	for (const auto& meshPtr : _meshes) {
-		meshPtr->Draw(program);
-	}
-}

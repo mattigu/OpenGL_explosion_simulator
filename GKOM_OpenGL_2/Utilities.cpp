@@ -308,6 +308,14 @@ InstancedMesh LoadBoxMeshInstanced()
             base + 0, base + 2, base + 3
             });
     }
+
+    Texture text;
+    InstancedMesh mesh(vertices, indices, text, getSampleInstanceMatrices());
+    return mesh;
+}
+
+std::vector<glm::mat4> getSampleInstanceMatrices()
+{
     std::vector<glm::mat4> instanceMatrices;
     for (int i = -2; i <= 2; i++)
     {
@@ -316,8 +324,5 @@ InstancedMesh LoadBoxMeshInstanced()
             instanceMatrices.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(i * 3.0f, j * 3.0f, 0.0f)));
         }
     }
-
-    Texture text;
-    InstancedMesh mesh(vertices, indices, text, instanceMatrices);
-    return mesh;
+    return instanceMatrices;
 }

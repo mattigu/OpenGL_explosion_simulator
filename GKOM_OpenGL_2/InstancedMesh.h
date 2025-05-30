@@ -14,7 +14,7 @@ private:
 	void updateInstanceVBO() const;
 
 public:
-	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices)
+	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices = { glm::mat4(1.0f) })
 		: Mesh(vertices, indices, diffuseTexture), _modelMatrices(std::move(modelMatrices)) {
 		setupInstancing();
 	};

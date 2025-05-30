@@ -8,6 +8,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "RegularModel.h"
+#include "InstancedModel.h"
 
 
 
@@ -103,7 +104,8 @@ void OpenGLWindow::MainLoop()
     //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
     fs::path ratPath = "RAT/RAT.fbx";
     //fs::path chiyoPath = "chiyo/chiyo.obj";
-    RegularModel rat = RegularModel(ratPath);
+    //RegularModel rat = RegularModel(ratPath);
+    InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
     //RegularModel chiyo = RegularModel(chiyoPath);
     while (!glfwWindowShouldClose(_window))
     {
@@ -154,7 +156,7 @@ void OpenGLWindow::MainLoop()
         // Draw instanced
         //imesh.Draw(explosionProgram);
         // Draw loaded models
-        //rat.Draw(explosionProgram);
+        rat.Draw(explosionProgram);
         //chiyo.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
