@@ -13,3 +13,4 @@ GLuint LoadBox(GLenum* primitive, unsigned int* count);
 RegularMesh LoadBoxMesh();
 InstancedMesh LoadBoxMeshInstanced();
 std::vector<glm::mat4> getSampleInstanceMatrices();
+std::vector<glm::mat4> getSampleInstanceMatricesCube(int size);

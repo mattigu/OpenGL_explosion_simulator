@@ -326,3 +326,19 @@ std::vector<glm::mat4> getSampleInstanceMatrices()
     }
     return instanceMatrices;
 }
+
+std::vector<glm::mat4> getSampleInstanceMatricesCube(int size)
+{
+    std::vector<glm::mat4> instanceMatrices;
+    for (int i = -size; i <= size; i++)
+    {
+        for (int j = -size; j <= size; j++)
+        {
+            for (int k = -size; k <= size; k++)
+            {
+                instanceMatrices.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(i * 3.0f, j * 3.0f, k * 3.0f)));
+            }
+        }
+    }
+    return instanceMatrices;
+}
