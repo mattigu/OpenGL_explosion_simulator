@@ -56,7 +56,7 @@ void InstancedMesh::Draw(Program& program) const
     glUniform1i(program.GetUniformID("useInstancing"), 1);
 
     glBindVertexArray(_VAO);
-    glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(_numIndices), GL_UNSIGNED_INT, 0, _modelMatrices.size());
+    glDrawElementsInstanced(GL_TRIANGLES, _numIndices, GL_UNSIGNED_INT, 0, _modelMatrices.size());
 
     glUniform1i(program.GetUniformID("useTexture"), 0);
     glUniform1i(program.GetUniformID("useInstancing"), 0);
