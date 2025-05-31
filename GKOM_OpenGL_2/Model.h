@@ -20,6 +20,8 @@ namespace fs = std::filesystem;
 class Model
 {
 private:
+	const GLenum _bufferType = GL_STATIC_DRAW;
+
 	inline static const fs::path _modelsDirectory = "../Resources/Models/"; // Directory where all models are stored
 
 	void processNode(aiNode* node, const aiScene* scene);
@@ -29,7 +31,7 @@ private:
 	Texture loadDiffuseTexture(aiMaterial* mat) const;
 
 protected:
-	Model() = default;
+	Model(GLenum bufferType) : _bufferType(bufferType) {};
 
 	fs::path _directory; // This model's directory
 

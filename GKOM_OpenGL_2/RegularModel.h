@@ -8,7 +8,7 @@ private:
 
 	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture) final override;
 public:
-	RegularModel(const fs::path& relativePath) {
+	RegularModel(const fs::path& relativePath, GLenum bufferType = GL_STATIC_DRAW) : Model(bufferType) {
 		loadModel(_directory / relativePath); 
 	};
 

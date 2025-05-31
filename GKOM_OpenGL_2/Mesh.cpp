@@ -18,10 +18,10 @@ void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsi
     glBindVertexArray(_VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], _bufferType);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], _bufferType);
 
     // vertex Positions
     glEnableVertexAttribArray(0);
