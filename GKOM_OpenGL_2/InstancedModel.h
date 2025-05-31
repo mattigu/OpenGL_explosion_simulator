@@ -8,9 +8,8 @@ private:
 
 	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture) final override;
 public:
-	InstancedModel(const fs::path& relativePath, const std::vector<glm::mat4>& modelMatrices, GLenum bufferType = GL_STATIC_DRAW)
-		: Model(bufferType), _modelMatrices(modelMatrices) {
-		loadModel(_directory / relativePath);
+	InstancedModel(const fs::path& relativePath, const std::vector<glm::mat4>& modelMatrices) :_modelMatrices(modelMatrices) {
+		loadModel( _directory / relativePath);
 	}
 
 	void Draw(Program& program) const final override;

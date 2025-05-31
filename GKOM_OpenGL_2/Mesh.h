@@ -25,12 +25,11 @@ struct Texture {
 
 class Mesh {
 private:
-	const GLenum _bufferType = GL_STATIC_DRAW; // default option for glBufferData
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 protected:
 	virtual ~Mesh();
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, GLenum bufferType = GL_STATIC_DRAW)
-		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())), _bufferType(bufferType) {
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
+		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())) {
 		setupMesh(vertices, indices);
 	};
 
