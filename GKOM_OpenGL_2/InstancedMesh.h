@@ -7,11 +7,13 @@ class RegularMesh;
 
 class InstancedMesh : public Mesh {
 private:
+	GLenum _instanceBufferType = GL_DYNAMIC_DRAW;
 	GLuint _instanceVBO;
 	std::vector<glm::mat4> _modelMatrices;
 
 	void setupInstancing();
 	void updateInstanceVBO() const;
+	void remakeInstanceVBO() const;
 
 public:
 	InstancedMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, std::vector<glm::mat4> modelMatrices = { glm::mat4(1.0f) })
@@ -34,13 +36,3 @@ public:
 
 	void setModelMatrices(const std::vector<glm::mat4>& modelMatrices);
 };
-
-
-
-// Could add something like this later to modify singular model matrix
-
-//void InstancedMesh::updateSingleInstance(int index) const
-//{
-//	glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-//	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4), &_modelMatrices[index]);
-//}

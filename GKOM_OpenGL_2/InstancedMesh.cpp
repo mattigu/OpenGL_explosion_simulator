@@ -12,7 +12,7 @@ void InstancedMesh::setupInstancing()
 
     glGenBuffers(1, &_instanceVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], _instanceBufferType);
 
     glBindVertexArray(_VAO);
     // set attribute pointers for matrix (4 times vec4)
@@ -36,7 +36,13 @@ void InstancedMesh::setupInstancing()
 void InstancedMesh::updateInstanceVBO() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], GL_STATIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0]);
+}
+
+void InstancedMesh::remakeInstanceVBO() const
+{
+    glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
+    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], _instanceBufferType);
 }
 
 InstancedMesh InstancedMesh::fromRegularMesh(RegularMesh& mesh, std::vector<glm::mat4> modelMatrices)
@@ -73,8 +79,17 @@ void InstancedMesh::applyTransformation(const glm::mat4& transform)
 
 void InstancedMesh::setModelMatrices(const std::vector<glm::mat4>& modelMatrices)
 {
+    size_t oldSize = _modelMatrices.size();
+    size_t newSize = modelMatrices.size();
+
     _modelMatrices = modelMatrices;
-    updateInstanceVBO();
+
+    if (newSize <= oldSize) { 
+        updateInstanceVBO();
+    }
+    else {
+        remakeInstanceVBO();
+    }
 }
 
 
