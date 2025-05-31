@@ -38,5 +38,6 @@ protected:
 
 public:
 	virtual void Draw(Program& program) const = 0;
+	virtual void applyTransformation(const glm::mat4& transform) = 0;
 };
 

@@ -11,3 +11,10 @@ void InstancedModel::Draw(Program& program) const
 		meshPtr->Draw(program);
 	}
 }
+
+void InstancedModel::applyTransformation(const glm::mat4& transform)
+{
+	for (const auto& meshPtr : _meshes) {
+		meshPtr->applyTransformation(transform);
+	}
+}

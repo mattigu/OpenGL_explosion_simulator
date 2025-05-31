@@ -13,5 +13,6 @@ public:
 	}
 
 	void Draw(Program& program) const final override;
+	void applyTransformation(const glm::mat4& transform) final override;
 };
 

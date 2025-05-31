@@ -11,3 +11,10 @@ void RegularModel::Draw(Program& program) const
 		meshPtr->Draw(program);
 	}
 }
+
+void RegularModel::applyTransformation(const glm::mat4& transform)
+{
+	for (const auto& meshPtr : _meshes) {
+		meshPtr->applyTransformation(transform);
+	}
+}
