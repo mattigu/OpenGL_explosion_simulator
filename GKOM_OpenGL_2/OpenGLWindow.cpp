@@ -107,6 +107,7 @@ void OpenGLWindow::MainLoop()
     //fs::path chiyoPath = "chiyo/chiyo.obj";
     //RegularModel rat = RegularModel(ratPath);
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
+
     //RegularModel chiyo = RegularModel(chiyoPath);
     float explosionStrength = 20.0f;
     while (!glfwWindowShouldClose(_window))
@@ -118,7 +119,9 @@ void OpenGLWindow::MainLoop()
 
         _gui->startNewFrame();
         _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused, &explosionStrength);
-        _gui->createPerformanceOverlay();
+        
+        int triangleCount = rat.getTriangleCount();
+        _gui->createPerformanceOverlay(triangleCount);
 
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);

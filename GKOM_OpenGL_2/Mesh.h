@@ -39,6 +39,8 @@ protected:
 	GLsizei _numIndices;
 	Texture _diffuseTexture;
 	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
+	
+	int _triangleCount = 0;
 
 public:
 	Texture getTexture() const { return _diffuseTexture; };
@@ -46,4 +48,5 @@ public:
 
 	virtual void Draw(Program& program) const = 0;
 	virtual void applyTransformation(const glm::mat4& transform) = 0;
+	int getTriangleCount() const { return _triangleCount; }
 };

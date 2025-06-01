@@ -57,7 +57,7 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTi
 	ImGui::End();
 }
 
-void Gui::createPerformanceOverlay() const
+void Gui::createPerformanceOverlay(int triangleCount) const
 {
 	float fps = ImGui::GetIO().Framerate;
 	float frameTime = 1000.0f / fps;
@@ -72,6 +72,7 @@ void Gui::createPerformanceOverlay() const
 
 	ImGui::Text("FPS: %.1f", fps);
 	ImGui::Text("Frame Time: %.2f ms", frameTime);
+	ImGui::Text("Triangles: %d", triangleCount);
 
 	ImGui::End();
 }

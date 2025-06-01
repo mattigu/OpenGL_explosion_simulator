@@ -15,5 +15,6 @@ public:
 	void Draw(Program& program) const final override;
 	//void setModelMatrix(const glm::mat4& newModel);
 	void applyTransformation(const glm::mat4& transform) final override;
+	int getTriangleCount() const final override;
 };
 
