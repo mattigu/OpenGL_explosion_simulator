@@ -10,6 +10,7 @@
 
 #include "Program.h"
 #include "Utilities.h"
+#include "Gui.h"
 
 class Camera;
 
@@ -22,9 +23,17 @@ public:
 
 	bool InitWindow();
 
+	void InitGui();
+
 	void InitScene();
 
 	void MainLoop();
+
+	void updateDeltaTime();
+	void toggleVsync();
+
+	Camera* getCamera();
+	Gui* getGui();
 
 private:
 
@@ -32,11 +41,13 @@ private:
 
 	GLFWwindow* _window;
 	std::unique_ptr<Camera> _camera;
+	std::unique_ptr<Gui> _gui;
 
-	Program transformationProgram;
+	Program explosionProgram;
 	Program staticProgram;
 
-	float deltaTime;
+	float _deltaTime;
+	bool _vsyncEnabled;
 
 	float explosionTime;
 	float explosionSpeed;

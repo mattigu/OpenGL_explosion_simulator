@@ -25,6 +25,21 @@
     <Filter Include="Pliki zasobów\static_pipeline">
       <UniqueIdentifier>{87b70535-20a2-4080-8698-f1d5144afdf1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\Mesh">
+      <UniqueIdentifier>{85478b20-1cc3-4d16-8fff-dc95fbbcaf41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Mesh">
+      <UniqueIdentifier>{cfae653e-5850-4971-9a8d-47ca7b7fd797}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Model">
+      <UniqueIdentifier>{72e3ae49-dc72-44b1-8a63-68f8211b5795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Model">
+      <UniqueIdentifier>{7a23f2d5-214c-43a3-87a1-1ad71ae4b352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\stb_image">
+      <UniqueIdentifier>{e7833e76-be40-47f5-9ecd-d37bb914cc07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -40,6 +55,8 @@
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
     <ClCompile Include="..\Include\imgui\imgui_widgets.cpp">
       <Filter>Pliki źródłowe\imgui</Filter>
     </ClCompile>
@@ -64,6 +81,27 @@
     <ClCompile Include="Gui.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
+    <ClCompile Include="InstancedMesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularMesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularModel.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedModel.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Pliki źródłowe\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program.h">
@@ -76,6 +114,8 @@
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
     <ClInclude Include="..\Include\imgui\imconfig.h">
       <Filter>Pliki nagłówkowe\imgui</Filter>
     </ClInclude>
@@ -106,21 +146,39 @@
     <ClInclude Include="Gui.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularMesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedMesh.h">
+      <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedModel.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularModel.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\geometryshader.gs">
+    <None Include="..\Resources\Shaders\explosion_shader.geom">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\transformationshader.vs">
+    <None Include="..\Resources\Shaders\explosion_shader.vert">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\transformationshader.fs">
+    <None Include="..\Resources\Shaders\explosion_shader.frag">
       <Filter>Pliki zasobów\explosion_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simpleshader.fs">
+    <None Include="..\Resources\Shaders\simpleshader.frag">
       <Filter>Pliki zasobów\static_pipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simpleshader.vs">
+    <None Include="..\Resources\Shaders\simpleshader.vert">
       <Filter>Pliki zasobów\static_pipeline</Filter>
     </None>
   </ItemGroup>

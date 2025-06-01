@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/GKOM_OpenGL_2/imgui.ini
+/Lib/assimp-vc143-mtd.lib
+/vcpkg_installed/x86-windows

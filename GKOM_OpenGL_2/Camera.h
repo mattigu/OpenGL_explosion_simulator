@@ -28,6 +28,6 @@ private:
     float m_horizontalAngle;
     float m_verticalAngle;
 
-    float m_movementSpeed = 0.05f;
+    float m_movementSpeed = 8.0f;
     float m_mouseSensitivity = 0.1f;
 };

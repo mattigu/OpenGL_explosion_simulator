@@ -3,37 +3,36 @@
 Gui::Gui(GLFWwindow* window) : _window (window) {}
 
 
-Gui::~Gui() 
+Gui::~Gui()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 }
 
-void Gui::initImGui()
+void Gui::initImGui() const
 {
 	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::CreateContext(); 
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void Gui::startNewFrame()
+void Gui::startNewFrame() const
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void Gui::renderGui()
+void Gui::renderGui() const
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosionOrigin, bool* explosionPaused)
+void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused) const
 {
 	ImGui::Begin("Explosion effects");
 
@@ -41,6 +40,10 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosi
 
 	if (ImGui::Button(*explosionPaused ? "Resume" : "Pause")) {
 		*explosionPaused = !(*explosionPaused);
+	};
+
+	if (ImGui::Button("Reset")) {
+		*explosionTime = 0;
 	};
 
 
@@ -51,4 +54,28 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosi
 	
 
 	ImGui::End();
+}
+
+void Gui::createPerformanceOverlay() const
+{
+	float fps = ImGui::GetIO().Framerate;
+	float frameTime = 1000.0f / fps;
+
+	ImGuiWindowFlags windowFlags =
+		ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoFocusOnAppearing |
+		ImGuiWindowFlags_NoNav;
+
+	ImGui::Begin("Performance stats", nullptr, windowFlags);
+
+	ImGui::Text("FPS: %.1f", fps);
+	ImGui::Text("Frame Time: %.2f ms", frameTime);
+
+	ImGui::End();
+}
+
+bool Gui::wantCaptureMouse() const
+{
+	return ImGui::GetIO().WantCaptureMouse;
 }

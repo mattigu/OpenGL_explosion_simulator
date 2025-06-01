@@ -1,10 +1,15 @@
 #include "OpenGLWindow.h"
 #include "Camera.h"
 #include "Gui.h"
+#include "Utilities.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+
+#include "RegularModel.h"
+#include "InstancedModel.h"
+
 
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
@@ -14,7 +19,8 @@ OpenGLWindow::OpenGLWindow()
 {
 	_window = nullptr;
 
-    deltaTime = 0;
+    _deltaTime = 0;
+    _vsyncEnabled = false;
 
     explosionPaused = false;
     explosionSpeed = 1.0;
@@ -27,7 +33,7 @@ OpenGLWindow::OpenGLWindow()
     objectVAOVertexCount = 0;
 
     windowResolution = glm::vec2(800, 600);
-    fieldOfView = 45;
+    fieldOfView = 60;
 
     _camera = std::make_unique<Camera>(glm::vec3(0, 0, 20), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
@@ -50,9 +56,10 @@ bool OpenGLWindow::InitWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     _window = glfwCreateWindow((int)windowResolution.x, (int)windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
+    glfwSetWindowAspectRatio(_window, 4, 3);
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(_window, mouse_callback);
-    glfwSetWindowUserPointer(_window, _camera.get());
+    glfwSetWindowUserPointer(_window, this);
 
     if (_window == NULL)
     {
@@ -71,14 +78,19 @@ bool OpenGLWindow::InitWindow()
     }
 
     glfwSetFramebufferSizeCallback(_window, FramebufferSizeChangeCallback);
-
+    glfwSwapInterval(_vsyncEnabled ? 1 : 0);
     return true;
+}
+
+void OpenGLWindow::InitGui()
+{
+    _gui = std::make_unique<Gui>(_window);
 }
 
 void OpenGLWindow::InitScene()
 {
-    transformationProgram.Load("transformationshader.vs", "transformationshader.fs", "geometryshader.gs");
-    staticProgram.Load("simpleshader.vs", "simpleshader.fs");
+    explosionProgram.Load("explosion_shader.vert", "explosion_shader.frag", "explosion_shader.geom");
+    staticProgram.Load("simpleshader.vert", "simpleshader.frag");
 
     objectVAO = LoadBox(&objectVAOPrimitive, &objectVAOVertexCount);
 }
@@ -86,54 +98,67 @@ void OpenGLWindow::InitScene()
 void OpenGLWindow::MainLoop()
 {
     glEnable(GL_DEPTH_TEST);
-    Gui gui = Gui(_window);
-    gui.initImGui();
 
-    float lastFrameTime = 0.0;
-
+    _gui->initImGui();
+    RegularMesh mesh = LoadBoxMesh();
+    InstancedMesh imesh = LoadBoxMeshInstanced();
+    //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
+    fs::path ratPath = "RAT/RAT.fbx";
+    //fs::path chiyoPath = "chiyo/chiyo.obj";
+    //RegularModel rat = RegularModel(ratPath);
+    InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
+    //RegularModel chiyo = RegularModel(chiyoPath);
     while (!glfwWindowShouldClose(_window))
     {
-        float currentFrameTime = glfwGetTime();
-        deltaTime = currentFrameTime - lastFrameTime;
-        lastFrameTime = currentFrameTime;
+        updateDeltaTime();
 
         glfwPollEvents();
         processInput();
 
-        gui.startNewFrame();
-        gui.createExplosionControlWindow(&explosionSpeed, &explosionOrigin, &explosionPaused);
+        _gui->startNewFrame();
+        _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused);
+        _gui->createPerformanceOverlay();
 
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (!explosionPaused)
-            explosionTime += explosionSpeed * deltaTime;
+            explosionTime += explosionSpeed * _deltaTime;
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
         viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
 
-        transformationProgram.Activate();
+        explosionProgram.Activate();
 
-        glUniform3fv(transformationProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
-        glUniform1f(transformationProgram.GetUniformID("explosionTime"), explosionTime);
-        glUniformMatrix4fv(transformationProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-        glUniformMatrix4fv(transformationProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+        glUniform1i(explosionProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
+        glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
+        glUniform1f(explosionProgram.GetUniformID("explosionTime"), explosionTime);
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
     
-        // Draw objects
         for (int i = -2; i <= 2; i++)
         {
             for (int j = -2; j <= 2; j++)
             {
                 modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(i * 3.0f, j * 3.0f, 0.0f));
 
-                glUniformMatrix4fv(transformationProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+                glUniformMatrix4fv(explosionProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
                 glBindVertexArray(objectVAO);
                 glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
+
+                // Draw with the mesh class.
+                //mesh.setModelMatrix(modelMatrix);
+                //mesh.Draw(explosionProgram); 
             }
         }
+        // Draw instanced
+        //imesh.Draw(explosionProgram);
+        // Draw loaded models
+        rat.Draw(explosionProgram);
+        //chiyo.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();
@@ -149,10 +174,35 @@ void OpenGLWindow::MainLoop()
         glBindVertexArray(objectVAO);
         glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
 
-        gui.renderGui();
+        _gui->renderGui();
 
         glfwSwapBuffers(_window);
     }
+}
+
+void OpenGLWindow::updateDeltaTime()
+{
+    static double lastFrameTime;
+
+    double currentFrameTime = glfwGetTime();
+    _deltaTime = currentFrameTime - lastFrameTime;
+    lastFrameTime = currentFrameTime;
+}
+
+void OpenGLWindow::toggleVsync()
+{
+    _vsyncEnabled = !_vsyncEnabled;
+    glfwSwapInterval(_vsyncEnabled ? 1 : 0);
+}
+
+Camera* OpenGLWindow::getCamera()
+{
+    return _camera.get();
+}
+
+Gui* OpenGLWindow::getGui()
+{
+    return _gui.get();
 }
 
 void OpenGLWindow::processInput()
@@ -162,32 +212,52 @@ void OpenGLWindow::processInput()
         glfwSetWindowShouldClose(_window, true);
     }
 
-    // Explosion control. Right now it works badly since it checks every frame.
-    // If your click wasn't fast enough it will register as 2.
-    if (glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    if (glfwGetMouseButton(_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    }
+    else
+    {
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    }
+
+    // Explosion pause
+    static bool wasSpacePressedLastFrame;
+    bool spacePressedNow = glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS;
+    if (spacePressedNow && !wasSpacePressedLastFrame)
     {
         explosionPaused = !explosionPaused;
     }
+    wasSpacePressedLastFrame = spacePressedNow;
+
+    static bool wasVPressedLastFrame;
+    bool vPressedNow = glfwGetKey(_window, GLFW_KEY_V) == GLFW_PRESS;
+    if (vPressedNow && !wasVPressedLastFrame)
+    {
+        toggleVsync();
+    }
+    wasVPressedLastFrame = vPressedNow;
+
 
     // Camera movement
 
     if (glfwGetKey(_window, GLFW_KEY_W) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Forward);
+        _camera->processKeyboard(CameraMovement::Forward, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_S) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Backward);
+        _camera->processKeyboard(CameraMovement::Backward, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_A) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Left);
+        _camera->processKeyboard(CameraMovement::Left, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_D) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Right);
+        _camera->processKeyboard(CameraMovement::Right, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_Q) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Down);
+        _camera->processKeyboard(CameraMovement::Down, _deltaTime);
 
     if (glfwGetKey(_window, GLFW_KEY_E) == GLFW_PRESS)
-        _camera->processKeyboard(CameraMovement::Up);
+        _camera->processKeyboard(CameraMovement::Up, _deltaTime);
 }
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height)
@@ -207,8 +277,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
         return;
     }
 
-    Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    OpenGLWindow* glWindow = static_cast<OpenGLWindow*>(glfwGetWindowUserPointer(window));
+    Camera* camera = glWindow->getCamera();
     if (!camera) return;
+    if (glWindow->getGui()->wantCaptureMouse()) return;
 
     if (firstMouse)
     {

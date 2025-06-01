@@ -8,6 +8,8 @@ int main()
 
     openglWindow.InitWindow();
 
+    openglWindow.InitGui();
+
     openglWindow.InitScene();
 
     openglWindow.MainLoop();

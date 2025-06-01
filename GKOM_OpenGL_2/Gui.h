@@ -13,11 +13,12 @@ class Gui
 public:
 	Gui(GLFWwindow* window);
 	~Gui();
-	void initImGui();
-	void startNewFrame();
-	void renderGui();
-	void createExplosionControlWindow(float* explosionSpeed, glm::vec3* explosionOrigin, bool* explosionPaused);
-
+	void initImGui() const ;
+	void startNewFrame() const;
+	void renderGui() const;
+	void createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused) const;
+	void createPerformanceOverlay() const;
+	bool wantCaptureMouse() const;
 
 private:
 	GLFWwindow* _window;

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 class Program
 {
@@ -37,7 +37,7 @@ private:
 
 	GLuint _programID;
 
-	std::map<std::string, GLuint> _uniformsID;
+	std::unordered_map<std::string, GLuint> _uniformsID;
 
 	static std::string _programsDirectory;
 	
