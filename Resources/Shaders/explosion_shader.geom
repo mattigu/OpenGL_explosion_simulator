@@ -25,8 +25,10 @@ uniform mat4 uProjectionMatrix;
 
 const float G = 10.0;
 const float ground = -10.0;
+const float rampTime = 0.4; // Time to reach max velocity after being hit by the explosion.
 
 float expVelocity = 5.0; // How fast the explosion radius increases per second
+float expStrenght = 10.0;
 // Should probably be a uniform, but it currently it's equivalent to explosionTime anyway
 
 vec3 calculateNewCoordinates(vec3 velocity, vec3 point, float time)
@@ -53,7 +55,11 @@ void main()
 
     float timeSinceHit = abs(min(0, distToShockWave/expVelocity));
 
-    vec3 velocity = normalize(expVector) * max(0, -sign(distToShockWave)) * 10.0;
+    vec3 direction = normalize(expVector); // modify by random later
+    
+    float ramp = smoothstep(0.0, rampTime, timeSinceHit);
+
+    vec3 velocity = direction * ramp * expStrenght; 
     vec3 offset = calculateNewCoordinates(velocity, triangleCenter, timeSinceHit);
 
     for (int i = 0; i < 3; ++i)
