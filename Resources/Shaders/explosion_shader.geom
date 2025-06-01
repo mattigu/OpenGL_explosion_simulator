@@ -17,6 +17,7 @@ out GS_OUT {
 
 uniform float explosionTime;
 uniform vec3 explosionOrigin;
+uniform float explosionStrength;
 
 uniform mat4 uModelMatrix;
 uniform mat4 uViewMatrix;
@@ -53,7 +54,7 @@ void main()
 
     float timeSinceHit = abs(min(0, distToShockWave/expVelocity));
 
-    vec3 velocity = normalize(expVector) * max(0, -sign(distToShockWave)) * 10.0;
+    vec3 velocity = normalize(expVector) * max(0, -sign(distToShockWave)) * explosionStrength;
     vec3 offset = calculateNewCoordinates(velocity, triangleCenter, timeSinceHit);
 
     for (int i = 0; i < 3; ++i)

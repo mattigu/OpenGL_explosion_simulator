@@ -108,6 +108,7 @@ void OpenGLWindow::MainLoop()
     //RegularModel rat = RegularModel(ratPath);
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
     //RegularModel chiyo = RegularModel(chiyoPath);
+    float explosionStrength = 20.0f;
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -116,7 +117,7 @@ void OpenGLWindow::MainLoop()
         processInput();
 
         _gui->startNewFrame();
-        _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused);
+        _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused, &explosionStrength);
         _gui->createPerformanceOverlay();
 
 
@@ -135,6 +136,7 @@ void OpenGLWindow::MainLoop()
         glUniform1i(explosionProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
         glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
         glUniform1f(explosionProgram.GetUniformID("explosionTime"), explosionTime);
+        glUniform1f(explosionProgram.GetUniformID("explosionStrength"), explosionStrength);
         glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
     

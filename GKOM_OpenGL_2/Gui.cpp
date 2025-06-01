@@ -32,7 +32,7 @@ void Gui::renderGui() const
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused) const
+void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused, float* explosionStrength) const
 {
 	ImGui::Begin("Explosion effects");
 
@@ -51,8 +51,9 @@ void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTi
 	ImGui::DragFloat("X", &explosionOrigin->x, 0.1f, -20.0f, 20.0f);
 	ImGui::DragFloat("Y", &explosionOrigin->y, 0.1f, -20.0f, 20.0f);
 	ImGui::DragFloat("Z", &explosionOrigin->z, 0.1f, -20.0f, 20.0f);
+	ImGui::Text("Explosion Strength");
+	ImGui::SliderFloat("Strength", explosionStrength, 0.0f, 50.0f);
 	
-
 	ImGui::End();
 }
 

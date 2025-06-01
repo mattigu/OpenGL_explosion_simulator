@@ -16,7 +16,7 @@ public:
 	void initImGui() const ;
 	void startNewFrame() const;
 	void renderGui() const;
-	void createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused) const;
+	void createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused, float* explosionStrength) const;
 	void createPerformanceOverlay() const;
 	bool wantCaptureMouse() const;
 
