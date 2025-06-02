@@ -18,3 +18,12 @@ void RegularModel::applyTransformation(const glm::mat4& transform)
 		meshPtr->applyTransformation(transform);
 	}
 }
+
+int RegularModel::getTriangleCount() const
+{
+	int count = 0;
+	for (const auto& meshPtr : _meshes) {
+		count += meshPtr->getTriangleCount();
+	}
+	return count;
+}
