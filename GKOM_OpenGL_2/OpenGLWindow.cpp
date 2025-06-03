@@ -9,6 +9,7 @@
 
 #include "RegularModel.h"
 #include "InstancedModel.h"
+#include "Explosion.h"
 
 
 
@@ -21,12 +22,6 @@ OpenGLWindow::OpenGLWindow()
 
     _deltaTime = 0;
     _vsyncEnabled = false;
-
-    explosionPaused = false;
-    explosionSpeed = 1.0;
-    explosionTime = 0.0;
-    explosionOrigin = { 0.0f, 0.0f, 0.0 };
-
 
     objectVAO = 0;
     objectVAOPrimitive = 0;
@@ -110,6 +105,7 @@ void OpenGLWindow::MainLoop()
 
     //RegularModel chiyo = RegularModel(chiyoPath);
     float explosionStrength = 20.0f;
+    
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -118,7 +114,7 @@ void OpenGLWindow::MainLoop()
         processInput();
 
         _gui->startNewFrame();
-        _gui->createExplosionControlWindow(&explosionSpeed, &explosionTime, &explosionOrigin, &explosionPaused, &explosionStrength);
+        _gui->createExplosionControlWindow(_explosion);
         
         int triangleCount = rat.getTriangleCount();
         _gui->createPerformanceOverlay(triangleCount);
@@ -127,18 +123,16 @@ void OpenGLWindow::MainLoop()
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        if (!explosionPaused)
-            explosionTime += explosionSpeed * _deltaTime;
+        _explosion.updateTime(_deltaTime);
 
         projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
 
         viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
-
         explosionProgram.Activate();
 
         glUniform1i(explosionProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
-        glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(explosionOrigin));
-        glUniform1f(explosionProgram.GetUniformID("explosionTime"), explosionTime);
+        glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(_explosion.explosionOrigin));
+        glUniform1f(explosionProgram.GetUniformID("explosionTime"), _explosion.explosionTime);
         glUniform1f(explosionProgram.GetUniformID("explosionStrength"), explosionStrength);
         glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
         glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
@@ -169,7 +163,7 @@ void OpenGLWindow::MainLoop()
         staticProgram.Activate();
         float explosionOriginScale = 0.3f;
 
-        modelMatrix = glm::translate(glm::mat4(1.0f), explosionOrigin);
+        modelMatrix = glm::translate(glm::mat4(1.0f), _explosion.explosionOrigin);
         modelMatrix = glm::scale(modelMatrix, glm::vec3(explosionOriginScale));
 
         glUniformMatrix4fv(staticProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
@@ -231,7 +225,7 @@ void OpenGLWindow::processInput()
     bool spacePressedNow = glfwGetKey(_window, GLFW_KEY_SPACE) == GLFW_PRESS;
     if (spacePressedNow && !wasSpacePressedLastFrame)
     {
-        explosionPaused = !explosionPaused;
+        _explosion.togglePause();
     }
     wasSpacePressedLastFrame = spacePressedNow;
 

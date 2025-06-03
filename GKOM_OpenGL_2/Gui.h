@@ -6,6 +6,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Explosion.h"
 // Simple wrapper class for ImGui
 
 class Gui 
@@ -16,7 +17,7 @@ public:
 	void initImGui() const ;
 	void startNewFrame() const;
 	void renderGui() const;
-	void createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused, float* explosionStrength) const;
+	void createExplosionControlWindow(Explosion& explosion) const;
 	void createPerformanceOverlay(int triangleCount) const;
 	bool wantCaptureMouse() const;
 

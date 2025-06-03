@@ -40,6 +40,12 @@
     <Filter Include="Pliki źródłowe\stb_image">
       <UniqueIdentifier>{e7833e76-be40-47f5-9ecd-d37bb914cc07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\UniformBuffer">
+      <UniqueIdentifier>{b5fbd43b-4454-4469-acbb-802113cfdcc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\UniformBuffer">
+      <UniqueIdentifier>{844ca067-84bf-42eb-8032-d34eb9bdce15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,6 +108,24 @@
     <ClCompile Include="stb_image.cpp">
       <Filter>Pliki źródłowe\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="UniformBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatricesUBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionUBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatricesUBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Program.h">
@@ -163,6 +187,12 @@
     </ClInclude>
     <ClInclude Include="RegularModel.h">
       <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionUBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

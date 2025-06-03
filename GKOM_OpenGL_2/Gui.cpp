@@ -32,27 +32,28 @@ void Gui::renderGui() const
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused, float* explosionStrength) const
+void Gui::createExplosionControlWindow(Explosion& e) const
 {
 	ImGui::Begin("Explosion effects");
 
-	ImGui::SliderFloat("Speed", explosionSpeed, -10.f, 10.f);
+	ImGui::Text("Simulation speed");
+	ImGui::SliderFloat("##Simulation speed", &e.simulationSpeed, -10.f, 10.f);
 
-	if (ImGui::Button(*explosionPaused ? "Resume" : "Pause")) {
-		*explosionPaused = !(*explosionPaused);
+	if (ImGui::Button(&e.paused ? "Resume" : "Pause")) {
+		e.togglePause();
 	};
 
 	if (ImGui::Button("Reset")) {
-		*explosionTime = 0;
+		e.explosionTime = 0;
 	};
 
 
 	ImGui::Text("Explosion Origin");
-	ImGui::DragFloat("X", &explosionOrigin->x, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Y", &explosionOrigin->y, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Z", &explosionOrigin->z, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("X", &e.explosionOrigin.x, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Y", &e.explosionOrigin.y, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Z", &e.explosionOrigin.z, 0.1f, -20.0f, 20.0f);
 	ImGui::Text("Explosion Strength");
-	ImGui::SliderFloat("Strength", explosionStrength, 0.0f, 50.0f);
+	ImGui::SliderFloat("Strength", &e.explosionStrength, 0.0f, 50.0f);
 	
 	ImGui::End();
 }
