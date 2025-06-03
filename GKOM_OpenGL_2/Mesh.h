@@ -27,7 +27,7 @@ class Mesh {
 private:
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 protected:
-	virtual ~Mesh();
+	virtual ~Mesh() = 0;
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
 		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())) {
 		setupMesh(vertices, indices);
