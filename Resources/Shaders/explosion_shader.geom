@@ -38,6 +38,12 @@ float rand(float seed) {
     return fract(sin(seed) * 43758.5453);
 }
 
+float randRange(float seed, float low, float high) {
+    float diff = high - low;
+    float rng = rand(seed) * diff + low;
+    return rng;
+}
+
 mat3 rotationX(float angle) {
     float c = cos(angle);
     float s = sin(angle);
@@ -106,9 +112,9 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, floa
 //    vec3 axisY = vec3(0.0, 1.0, 0.0);
 //    vec3 axisZ = vec3(0.0, 0.0, 1.0);
 //
-//    float angleXFactor = length(cross(axisX, expDir)) * 0.5 * (rand(id)/4 + 0.5);
-//    float angleYFactor = length(cross(axisY, expDir)) * 0.5 * (rand(id)/4 + 0.5);
-//    float angleZFactor = length(cross(axisZ, expDir)) * 0.5 * (rand(id)/4 + 0.5);
+//    float angleXFactor = length(cross(axisX, expDir)) * 0.5 * (randRange(id, 0.8, 1.2);
+//    float angleYFactor = length(cross(axisY, expDir)) * 0.5 * (randRange(id, 0.8, 1.2);
+//    float angleZFactor = length(cross(axisZ, expDir)) * 0.5 * (randRange(id, 0.8, 1.2);
 //
 //    float baseAngVelX = baseAngularVelocity * angleXFactor;
 //    float baseAngVelY = baseAngularVelocity * angleYFactor;
@@ -156,7 +162,8 @@ void main()
     
     float ramp = smoothstep(0.0, rampTime, timeSinceHit);
 
-    vec3 velocity = direction * ramp * explosionStrength; 
+    float randomVelocityMult = randRange(seed, 0.8, 1.2);
+    vec3 velocity = direction * ramp * randomVelocityMult * explosionStrength; 
     vec3 offset = calculateOffset(velocity, triangleCenter, timeSinceHit);
 
     for (int i = 0; i < 3; ++i)
