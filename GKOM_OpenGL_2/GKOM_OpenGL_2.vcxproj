@@ -82,11 +82,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Include</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -96,7 +99,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,7 +108,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -116,7 +119,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)Lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -160,12 +163,23 @@
     <ClCompile Include="..\Include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\Include\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\Include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="ExplosionUBuffer.cpp" />
     <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="InstancedModel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="InstancedMesh.cpp" />
+    <ClCompile Include="MatricesUBuffer.cpp" />
+    <ClCompile Include="MatricesUBuffer.h" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RegularMesh.cpp" />
+    <ClCompile Include="RegularModel.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="UniformBuffer.cpp" />
+    <ClCompile Include="UniformBuffer.h" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,12 +193,17 @@
     <ClInclude Include="..\Include\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\Include\imgui\imstb_textedit.h" />
     <ClInclude Include="..\Include\imgui\imstb_truetype.h" />
+    <ClInclude Include="Explosion.h" />
+    <ClInclude Include="ExplosionUBuffer.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="InstancedMesh.h" />
+    <ClInclude Include="InstancedModel.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="RegularMesh.h" />
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="Program.h" />
+    <ClInclude Include="RegularModel.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>

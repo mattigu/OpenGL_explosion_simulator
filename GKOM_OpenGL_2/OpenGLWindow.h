@@ -49,10 +49,7 @@ private:
 	float _deltaTime;
 	bool _vsyncEnabled;
 
-	float explosionTime;
-	float explosionSpeed;
-	bool explosionPaused;
-	glm::vec3 explosionOrigin;
+	Explosion _explosion;
 
 	GLuint objectVAO;
 	GLenum objectVAOPrimitive;

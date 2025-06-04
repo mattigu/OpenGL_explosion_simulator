@@ -1,46 +1,37 @@
 #include "RegularMesh.h"
 
-void RegularMesh::setupMesh()
+std::tuple<GLuint, GLuint, GLuint> RegularMesh::releaseBuffers()
 {
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(unsigned int), &_indices[0], GL_STATIC_DRAW);
-
-    // vertex Positions
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-    // vertex normals
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-    // vertex colors
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
-    // vertex texture coords
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
-
-    glBindVertexArray(0);
+    auto tmp = std::make_tuple(_VAO, _VBO, _EBO);
+    _VAO = _VBO = _EBO = 0;
+    return tmp;
 }
 
-void RegularMesh::Draw(Program& program)
+void RegularMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
+        glUniform1i(program.GetUniformID("useTexture"), 1);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture.id);
         glUniform1i(program.GetUniformID("diffuseTexture"), 0);
     }
 
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, (_indices.size()), GL_UNSIGNED_INT, 0);
+    glUniformMatrix4fv(program.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(_modelMatrix));
+    glBindVertexArray(_VAO);
+    glDrawElements(GL_TRIANGLES, (_numIndices), GL_UNSIGNED_INT, 0);
 
+    glUniform1i(program.GetUniformID("useTexture"), 0);
 
     glBindVertexArray(0);
 }
+
+void RegularMesh::applyTransformation(const glm::mat4& transform)
+{
+    _modelMatrix = _modelMatrix * transform;
+}
+
+void RegularMesh::setModelMatrix(const glm::mat4& newModel)
+{
+    _modelMatrix = newModel;
+}
+

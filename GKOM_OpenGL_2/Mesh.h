@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <GL/glew.h>
 
 #include "Program.h"
@@ -17,26 +18,30 @@ struct Vertex {
 
 
 struct Texture {
-	GLuint id;
-	std::string type;
-	std::string path;
+	GLuint id = 0;
 };
 
 // A mesh with instancing requires a different setup
 
-// Should probably use std::move to not copy the data. I'll do that once this simple version works
 class Mesh {
+private:
+	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 protected:
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
-		: _vertices(vertices), _indices(indices), _diffuseTexture(diffuseTexture) {};
+	virtual ~Mesh() = 0;
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
+		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())) {
+		setupMesh(vertices, indices);
+	};
 
-	std::vector<Vertex> _vertices;
-	std::vector<unsigned int> _indices;
+	GLsizei _numIndices;
 	Texture _diffuseTexture;
-
-	GLuint VBO = 0, EBO = 0, VAO = 0;
+	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
 
 public:
-	virtual void setupMesh() = 0;
-	virtual void Draw(Program& program) = 0;
+	Texture getTexture() const { return _diffuseTexture; };
+	GLsizei getNumIndices() const { return _numIndices; };
+
+	virtual void Draw(Program& program) const = 0;
+	virtual void applyTransformation(const glm::mat4& transform) = 0;
+	virtual int getTriangleCount() const = 0;
 };

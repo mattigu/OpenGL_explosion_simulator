@@ -5,7 +5,7 @@ uniform sampler2D diffuseTexture;
 uniform bool useTexture;
 
 in GS_OUT {
-    vec3 Color;
+    vec4 Color;
     vec2 TextureCoords;
 } fs_in;
 
@@ -15,7 +15,7 @@ void main()
     if(useTexture) {
         FragColor = texture(diffuseTexture, fs_in.TextureCoords);
     } else {
-        FragColor = vec4(fs_in.Color, 1.0);
+        FragColor = vec4(fs_in.Color);
     }
 
 } 

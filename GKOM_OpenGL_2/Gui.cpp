@@ -10,7 +10,7 @@ Gui::~Gui()
 	ImGui::DestroyContext();
 }
 
-void Gui::initImGui()
+void Gui::initImGui() const
 {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext(); 
@@ -19,44 +19,46 @@ void Gui::initImGui()
 	ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void Gui::startNewFrame()
+void Gui::startNewFrame() const
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 }
 
-void Gui::renderGui()
+void Gui::renderGui() const
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void Gui::createExplosionControlWindow(float* explosionSpeed, float* explosionTime, glm::vec3* explosionOrigin, bool* explosionPaused)
+void Gui::createExplosionControlWindow(Explosion& e) const
 {
 	ImGui::Begin("Explosion effects");
 
-	ImGui::SliderFloat("Speed", explosionSpeed, -10.f, 10.f);
+	ImGui::Text("Simulation speed");
+	ImGui::SliderFloat("##Simulation speed", &e.simulationSpeed, -10.f, 10.f);
 
-	if (ImGui::Button(*explosionPaused ? "Resume" : "Pause")) {
-		*explosionPaused = !(*explosionPaused);
+	if (ImGui::Button(e.paused ? "Resume" : "Pause")) {
+		e.togglePause();
 	};
 
 	if (ImGui::Button("Reset")) {
-		*explosionTime = 0;
+		e.explosionTime = 0;
 	};
 
 
 	ImGui::Text("Explosion Origin");
-	ImGui::DragFloat("X", &explosionOrigin->x, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Y", &explosionOrigin->y, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Z", &explosionOrigin->z, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("X", &e.explosionOrigin.x, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Y", &e.explosionOrigin.y, 0.1f, -20.0f, 20.0f);
+	ImGui::DragFloat("Z", &e.explosionOrigin.z, 0.1f, -20.0f, 20.0f);
+	ImGui::Text("Explosion Strength");
+	ImGui::SliderFloat("Strength", &e.explosionStrength, 0.0f, 50.0f);
 	
-
 	ImGui::End();
 }
 
-void Gui::createPerformanceOverlay()
+void Gui::createPerformanceOverlay(int triangleCount) const
 {
 	float fps = ImGui::GetIO().Framerate;
 	float frameTime = 1000.0f / fps;
@@ -71,11 +73,12 @@ void Gui::createPerformanceOverlay()
 
 	ImGui::Text("FPS: %.1f", fps);
 	ImGui::Text("Frame Time: %.2f ms", frameTime);
+	ImGui::Text("Triangles: %d", triangleCount);
 
 	ImGui::End();
 }
 
-bool Gui::wantCaptureMouse()
+bool Gui::wantCaptureMouse() const
 {
 	return ImGui::GetIO().WantCaptureMouse;
 }

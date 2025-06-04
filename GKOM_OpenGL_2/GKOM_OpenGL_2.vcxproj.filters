@@ -31,6 +31,21 @@
     <Filter Include="Pliki źródłowe\Mesh">
       <UniqueIdentifier>{cfae653e-5850-4971-9a8d-47ca7b7fd797}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\Model">
+      <UniqueIdentifier>{72e3ae49-dc72-44b1-8a63-68f8211b5795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Model">
+      <UniqueIdentifier>{7a23f2d5-214c-43a3-87a1-1ad71ae4b352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\stb_image">
+      <UniqueIdentifier>{e7833e76-be40-47f5-9ecd-d37bb914cc07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\UniformBuffer">
+      <UniqueIdentifier>{b5fbd43b-4454-4469-acbb-802113cfdcc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\UniformBuffer">
+      <UniqueIdentifier>{844ca067-84bf-42eb-8032-d34eb9bdce15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,6 +92,39 @@
     </ClCompile>
     <ClCompile Include="RegularMesh.cpp">
       <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="RegularModel.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedModel.cpp">
+      <Filter>Pliki źródłowe\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Pliki źródłowe\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Pliki źródłowe\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatricesUBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionUBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MatricesUBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="UniformBuffer.cpp">
+      <Filter>Pliki źródłowe\UniformBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +178,21 @@
     </ClInclude>
     <ClInclude Include="InstancedMesh.h">
       <Filter>Pliki nagłówkowe\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedModel.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="RegularModel.h">
+      <Filter>Pliki nagłówkowe\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionUBuffer.h">
+      <Filter>Pliki nagłówkowe\UniformBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.h">
+      <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
