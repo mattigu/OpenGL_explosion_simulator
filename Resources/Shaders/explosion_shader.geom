@@ -58,6 +58,14 @@ mat3 rotationZ(float angle) {
     );
 }
 
+mat3 rotationY(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        c,  0.0,  s,
+        0.0, 1.0, 0.0,
+       -s,  0.0,  c);}
+
 vec3 calculateOffset(vec3 velocity, vec3 point, float time)
 {
     float xOffset = velocity.x * time;
@@ -83,8 +91,11 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
 
     vec3 p = point - triangleCenter; // translate for rotation
 
-    vec3 rotated = rotationZ(angle) * rotationX(angle) * p + triangleCenter;
-    return rotated;
+    mat3 rotation = rotationZ(angle) * rotationZ(angle) * rotationX(angle);
+
+    vec3 rotatedPoint = rotation * p + triangleCenter;
+
+    return rotatedPoint;
 }
 
 
