@@ -7,6 +7,7 @@ layout(triangle_strip, max_vertices = 3) out;
 in VS_OUT {
     vec4 Color;
     vec2 TextureCoords;
+    vec3 WorldPos;
 } gs_in[];
 
 out GS_OUT {
@@ -14,6 +15,7 @@ out GS_OUT {
     vec2 TextureCoords;
 } gs_out;
 
+uniform bool useInstancing;
 
 uniform float explosionTime;
 uniform vec3 explosionOrigin;
@@ -26,12 +28,37 @@ uniform mat4 uProjectionMatrix;
 
 const float G = 10.0;
 const float ground = -10.0;
-const float rampTime = 0.4; // Time to reach max velocity after being hit by the explosion.
+const float rampTime = 0.2; // Time to reach max velocity after being hit by the explosion.
+const float baseAngularVelocity = 4.0;
 
 float expVelocity = 5.0; // How fast the explosion radius increases per second
 // Should probably be a uniform, but it currently it's equivalent to explosionTime anyway
 
-vec3 calculateNewCoordinates(vec3 velocity, vec3 point, float time)
+float rand(float seed) {
+    return fract(sin(seed) * 43758.5453);
+}
+
+mat3 rotationX(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        1, 0, 0,
+        0, c, -s,
+        0, s, c
+    );
+}
+
+mat3 rotationZ(float angle) {
+    float c = cos(angle);
+    float s = sin(angle);
+    return mat3(
+        c, -s, 0,
+        s, c, 0,
+        0, 0, 1
+    );
+}
+
+vec3 calculateOffset(vec3 velocity, vec3 point, float time)
 {
     float xOffset = velocity.x * time;
     float yOffset = velocity.y * time - 0.5 * G * time*time;
@@ -44,10 +71,30 @@ vec3 calculateNewCoordinates(vec3 velocity, vec3 point, float time)
     return offset;
 }
 
+vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
+{ 
+    float angularVelocity = baseAngularVelocity * (rand(id)*2 - 1);
+    float angularAcceleration = -sign(angularVelocity) * 0.5;
+
+    float stopTime = abs(angularVelocity / angularAcceleration);
+    float t = clamp(time, 0.0, stopTime);
+
+    float angle = angularVelocity * t + 0.5 * angularAcceleration * t * t;      
+
+    vec3 p = point - triangleCenter; // translate for rotation
+
+    vec3 rotated = rotationZ(angle) * rotationX(angle) * p + triangleCenter;
+    return rotated;
+}
+
+
 
 void main()
 {
-    vec3 triangleCenter = (gl_in[0].gl_Position.xyz + gl_in[1].gl_Position.xyz + gl_in[2].gl_Position.xyz) / 3.0;
+    // First point of the primitive as seed.
+    float seed = fract(dot(gs_in[0].WorldPos, vec3(7.198, 3.233, 1.53)));
+
+    vec3 triangleCenter = (gs_in[0].WorldPos + gs_in[1].WorldPos + gs_in[2].WorldPos) / 3.0;
     vec3 expVector = triangleCenter - explosionOrigin;
 
     float expRadius = explosionTime * expVelocity;
@@ -60,11 +107,12 @@ void main()
     float ramp = smoothstep(0.0, rampTime, timeSinceHit);
 
     vec3 velocity = direction * ramp * explosionStrength; 
-    vec3 offset = calculateNewCoordinates(velocity, triangleCenter, timeSinceHit);
+    vec3 offset = calculateOffset(velocity, triangleCenter, timeSinceHit);
 
     for (int i = 0; i < 3; ++i)
     {
-        vec3 newWorldPos = gl_in[i].gl_Position.xyz + offset;
+        vec3 rotated = rotatePoint(gs_in[i].WorldPos, triangleCenter, timeSinceHit, seed);
+        vec3 newWorldPos = rotated + offset;
         gl_Position = uProjectionMatrix * uViewMatrix * vec4(newWorldPos, 1.0);
         gs_out.Color = gs_in[i].Color;
         gs_out.TextureCoords = gs_in[i].TextureCoords;

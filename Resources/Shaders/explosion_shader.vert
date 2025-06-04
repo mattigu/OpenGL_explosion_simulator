@@ -9,6 +9,7 @@ layout (location = 4) in mat4 attrInstanceMatrix;
 out VS_OUT {
     vec4 Color;
     vec2 TextureCoords;
+    vec3 WorldPos;
 } vs_out;
 
 uniform bool useInstancing;
@@ -20,7 +21,10 @@ void main()
 {
     vs_out.Color = attrColor;
     vs_out.TextureCoords = attrTextureCoords;
-    mat4 modelMatrix = useInstancing ? attrInstanceMatrix : uModelMatrix;
 
-    gl_Position = modelMatrix * vec4(attrPosition, 1.0);
+    mat4 modelMatrix = useInstancing ? attrInstanceMatrix : uModelMatrix;
+    vec4 worldPos = modelMatrix * vec4(attrPosition, 1.0);
+
+    vs_out.WorldPos = worldPos.xyz;
+
 }
