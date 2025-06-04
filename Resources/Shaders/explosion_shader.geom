@@ -98,6 +98,37 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
     return rotatedPoint;
 }
 
+// This version has unique velocities per angle, but is significantly less performant. 
+//vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
+//{ 
+//    float baseAngVelX = baseAngularVelocity * (rand(id * 5.1) * 2.0 - 1.0);
+//    float baseAngVelY = baseAngularVelocity * (rand(id * 1.3) * 2.0 - 1.0);
+//    float baseAngVelZ = baseAngularVelocity * (rand(id * 0.7) * 2.0 - 1.0);
+//
+//    float angularAccel = 0.5;
+//
+//    float stopTimeX = abs(baseAngVelX / angularAccel);
+//    float stopTimeY = abs(baseAngVelY / angularAccel);
+//    float stopTimeZ = abs(baseAngVelZ / angularAccel);
+//
+//    float tX = clamp(time, 0.0, stopTimeX);
+//    float tY = clamp(time, 0.0, stopTimeY);
+//    float tZ = clamp(time, 0.0, stopTimeZ);
+//
+//    // Calculate angles with kinematic formula
+//    float angleX = baseAngVelX * tX + 0.5 * (-sign(baseAngVelX) * angularAccel) * tX * tX;
+//    float angleY = baseAngVelY * tY + 0.5 * (-sign(baseAngVelY) * angularAccel) * tY * tY;
+//    float angleZ = baseAngVelZ * tZ + 0.5 * (-sign(baseAngVelZ) * angularAccel) * tZ * tZ;
+//
+//    // Translate to 0,0,0 for rotation
+//    vec3 p = point - triangleCenter;
+//
+//    mat3 rotation = rotationX(angleX) * rotationY(angleY) * rotationZ(angleZ);
+//
+//    vec3 rotatedPoint = rotation * p + triangleCenter;
+//    return rotatedPoint;
+//}
+
 
 
 void main()
