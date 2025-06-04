@@ -79,7 +79,7 @@ vec3 calculateOffset(vec3 velocity, vec3 point, float time)
     return offset;
 }
 
-vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
+vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, float id)
 { 
     float angularVelocity = baseAngularVelocity * (rand(id)*2 - 1);
     float angularAcceleration = -sign(angularVelocity) * 0.5;
@@ -99,13 +99,22 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
 }
 
 // This version has unique velocities per angle, but is significantly less performant. 
-//vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
+// One axis could be removed without much visual loss though.
+//vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, float id)
 //{ 
-//    float baseAngVelX = baseAngularVelocity * (rand(id * 5.1) * 2.0 - 1.0);
-//    float baseAngVelY = baseAngularVelocity * (rand(id * 1.3) * 2.0 - 1.0);
-//    float baseAngVelZ = baseAngularVelocity * (rand(id * 0.7) * 2.0 - 1.0);
+//    vec3 axisX = vec3(1.0, 0.0, 0.0);
+//    vec3 axisY = vec3(0.0, 1.0, 0.0);
+//    vec3 axisZ = vec3(0.0, 0.0, 1.0);
 //
-//    float angularAccel = 0.5;
+//    float angleXFactor = length(cross(axisX, expDir)) * 0.5 * (rand(id)/4 + 0.5);
+//    float angleYFactor = length(cross(axisY, expDir)) * 0.5 * (rand(id)/4 + 0.5);
+//    float angleZFactor = length(cross(axisZ, expDir)) * 0.5 * (rand(id)/4 + 0.5);
+//
+//    float baseAngVelX = baseAngularVelocity * angleXFactor;
+//    float baseAngVelY = baseAngularVelocity * angleYFactor;
+//    float baseAngVelZ = baseAngularVelocity * angleZFactor;
+//
+//    float angularAccel = 0.3;
 //
 //    float stopTimeX = abs(baseAngVelX / angularAccel);
 //    float stopTimeY = abs(baseAngVelY / angularAccel);
@@ -130,7 +139,6 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, float time, float id)
 //}
 
 
-
 void main()
 {
     // First point of the primitive as seed.
@@ -153,7 +161,7 @@ void main()
 
     for (int i = 0; i < 3; ++i)
     {
-        vec3 rotated = rotatePoint(gs_in[i].WorldPos, triangleCenter, timeSinceHit, seed);
+        vec3 rotated = rotatePoint(gs_in[i].WorldPos, triangleCenter, direction, timeSinceHit, seed);
         vec3 newWorldPos = rotated + offset;
         gl_Position = uProjectionMatrix * uViewMatrix * vec4(newWorldPos, 1.0);
         gs_out.Color = gs_in[i].Color;
