@@ -97,7 +97,6 @@ void OpenGLWindow::MainLoop()
     _gui->initImGui();
     RegularMesh mesh = LoadBoxMesh();
     InstancedMesh imesh = LoadBoxMeshInstanced();
-    //InstancedMesh imesh = InstancedMesh::fromRegularMesh(mesh, ...);
     fs::path ratPath = "RAT/RAT.fbx";
     //fs::path chiyoPath = "chiyo/chiyo.obj";
     //RegularModel rat = RegularModel(ratPath);

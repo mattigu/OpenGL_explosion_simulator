@@ -21,15 +21,7 @@ public:
 		setupInstancing();
 	};
 
-	// Usually not called explictly, used in fromRegularMesh to convert meshes with copying buffers. 
-	InstancedMesh(GLuint vao, GLuint vbo, GLuint ebo, Texture texture, GLsizei indexCount, std::vector<glm::mat4> modelMatrices)
-		: Mesh(vao, vbo, ebo, texture, indexCount), _modelMatrices(std::move(modelMatrices)) {
-		setupInstancing();
-	}
-
 	virtual ~InstancedMesh() override;
-
-	static InstancedMesh fromRegularMesh(RegularMesh& mesh, std::vector<glm::mat4> modelMatrices);
 
 	void Draw(Program& program) const final override;
 	void applyTransformation(const glm::mat4& transform) final override;

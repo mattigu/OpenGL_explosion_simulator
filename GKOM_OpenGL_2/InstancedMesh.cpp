@@ -45,12 +45,6 @@ void InstancedMesh::remakeInstanceVBO() const
     glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], _instanceBufferType);
 }
 
-InstancedMesh InstancedMesh::fromRegularMesh(RegularMesh& mesh, std::vector<glm::mat4> modelMatrices)
-{
-    auto[vao, vbo, ebo] = mesh.releaseBuffers();
-    return InstancedMesh(vao, vbo, ebo, mesh.getTexture(), mesh.getNumIndices(), std::move(modelMatrices));
-}
-
 void InstancedMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded

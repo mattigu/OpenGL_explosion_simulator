@@ -33,9 +33,6 @@ protected:
 		setupMesh(vertices, indices);
 	};
 
-	Mesh(GLuint vao, GLuint vbo, GLuint ebo, Texture diffuseTexture, GLsizei numIndices)
-		: _VAO(vao), _VBO(vbo), _EBO(ebo), _diffuseTexture(diffuseTexture), _numIndices(numIndices) {};
-
 	GLsizei _numIndices;
 	Texture _diffuseTexture;
 	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
