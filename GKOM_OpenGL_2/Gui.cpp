@@ -39,7 +39,7 @@ void Gui::createExplosionControlWindow(Explosion& e) const
 	ImGui::Text("Simulation speed");
 	ImGui::SliderFloat("##Simulation speed", &e.simulationSpeed, -10.f, 10.f);
 
-	if (ImGui::Button(&e.paused ? "Resume" : "Pause")) {
+	if (ImGui::Button(e.paused ? "Resume" : "Pause")) {
 		e.togglePause();
 	};
 
