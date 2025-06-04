@@ -29,7 +29,7 @@ uniform mat4 uProjectionMatrix;
 const float G = 10.0;
 const float ground = -10.0;
 const float rampTime = 0.2; // Time to reach max velocity after being hit by the explosion.
-const float baseAngularVelocity = 4.0;
+const float baseAngularVelocity = 2.0;
 const float baseAngularAccel = 0.4;
 
 float expVelocity = 5.0; // How fast the explosion radius increases per second
@@ -113,9 +113,9 @@ vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, floa
     vec3 axisY = vec3(0.0, 1.0, 0.0);
     vec3 axisZ = vec3(0.0, 0.0, 1.0);
 
-    float angleXFactor = length(cross(axisX, expDir)) * 0.5 * randRange(id, 0.8, 1.2);
-    float angleYFactor = length(cross(axisY, expDir)) * 0.5 * randRange(id, 0.8, 1.2);
-    float angleZFactor = length(cross(axisZ, expDir)) * 0.5 * randRange(id, 0.8, 1.2);
+    float angleXFactor = length(cross(axisX, expDir)) * randRange(id, 0.8, 1.2);
+    float angleYFactor = length(cross(axisY, expDir)) * randRange(id, 0.8, 1.2);
+    float angleZFactor = length(cross(axisZ, expDir)) * randRange(id, 0.8, 1.2);
 
     float baseAngVelX = baseAngularVelocity * angleXFactor;
     float baseAngVelY = baseAngularVelocity * angleYFactor;
@@ -156,8 +156,11 @@ void main()
 
     float timeSinceHit = abs(min(0, distToShockWave/expVelocity));
 
-    vec3 direction = normalize(expVector); // modify by random later
-    
+    vec3 direction = normalize(expVector);
+    vec3 randomNudge = vec3(randRange(seed, 0.7, 1.3), randRange(seed + 1, 0.7, 1.3), randRange(seed + 2, 0.7, 1.3));
+
+    direction = normalize(direction * randomNudge);
+
     float ramp = smoothstep(0.0, rampTime, timeSinceHit);
 
     float randomVelocityMult = randRange(seed, 0.8, 1.2);
