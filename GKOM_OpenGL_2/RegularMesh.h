@@ -18,5 +18,6 @@ public:
 	void applyTransformation(const glm::mat4& transform) final override;
 
 	void setModelMatrix(const glm::mat4& newModel);
+	int getTriangleCount() const override { return _numIndices / 3; };
 };
 

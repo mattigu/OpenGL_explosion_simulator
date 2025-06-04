@@ -11,8 +11,6 @@ Mesh::~Mesh()
 
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
-    _triangleCount = static_cast<int>(indices.size() / 3);
-    
     glGenVertexArrays(1, &_VAO);
     glGenBuffers(1, &_VBO);
     glGenBuffers(1, &_EBO);

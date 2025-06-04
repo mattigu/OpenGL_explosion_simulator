@@ -35,4 +35,6 @@ public:
 	void applyTransformation(const glm::mat4& transform) final override;
 
 	void setModelMatrices(const std::vector<glm::mat4>& modelMatrices);
+
+	int getTriangleCount() const override { return _numIndices / 3 * _modelMatrices.size(); };
 };
