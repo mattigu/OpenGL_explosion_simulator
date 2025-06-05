@@ -1,12 +1,5 @@
 #include "RegularMesh.h"
 
-std::tuple<GLuint, GLuint, GLuint> RegularMesh::releaseBuffers()
-{
-    auto tmp = std::make_tuple(_VAO, _VBO, _EBO);
-    _VAO = _VBO = _EBO = 0;
-    return tmp;
-}
-
 void RegularMesh::Draw(Program& program) const
 {
     if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
