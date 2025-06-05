@@ -14,5 +14,5 @@ public:
 	MatricesUBuffer(const glm::mat4& view, const glm::mat4& projection) : UniformBuffer(BindingPoint, BufferSize), _projection(projection), _view(view) {}
 	~MatricesUBuffer() = default;
 
-	void updateUniforms() final override;
+	void updateUniforms() const final override;
 };

@@ -10,7 +10,7 @@
 #include "RegularModel.h"
 #include "InstancedModel.h"
 #include "Explosion.h"
-
+#include "ExplosionUBuffer.h"
 
 
 void FramebufferSizeChangeCallback(GLFWwindow* window, int width, int height);
@@ -43,7 +43,7 @@ bool OpenGLWindow::InitWindow()
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     _window = glfwCreateWindow((int)_windowResolution.x, (int)_windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
@@ -92,6 +92,8 @@ void OpenGLWindow::MainLoop()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    //ExplosionUBuffer explosionBuffer(_explosion);
+
     RegularMesh explosionPoint = LoadBoxMesh();
     InstancedMesh boxes = LoadBoxMeshInstanced();
     fs::path ratPath = "RAT/RAT.fbx";
@@ -116,6 +118,8 @@ void OpenGLWindow::MainLoop()
 
         _explosion.updateTime(_deltaTime);
 
+        //explosionBuffer.updateUniforms();
+
         _projectionMatrix = glm::perspective(glm::radians(_fieldOfView), _windowResolution.x / _windowResolution.y, 0.1f, 200.0f);
 
         _viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
@@ -127,7 +131,7 @@ void OpenGLWindow::MainLoop()
         glUniform1f(explosionProgram.GetUniformID("explosionStrength"), _explosion.explosionStrength);
         glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(_viewMatrix));
         glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_projectionMatrix));
-    
+
         rat.Draw(explosionProgram);
         boxes.Draw(explosionProgram);
         

@@ -4,7 +4,6 @@
 
 struct Explosion {
 	// Shader buffer params
-	bool isUpToDate = false;
 	glm::vec3 explosionOrigin = glm::vec3(0.0f, 0.0f, 0.0f);
 	float explosionTime = 0.0f;
 	float explosionStrength = 10.0f;
