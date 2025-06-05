@@ -33,8 +33,7 @@ const float rampTime = 0.2; // Time to reach max velocity after being hit by the
 const float baseAngularVelocity = 2.0;
 const float baseAngularAccel = 0.4;
 
-float expVelocity = 5.0; // How fast the explosion radius increases per second
-// Should probably be a uniform, but it currently it's equivalent to explosionTime anyway
+float expVelocity = 5.0; 
 
 float rand(float seed) {
     return fract(sin(seed) * 43758.5453);
