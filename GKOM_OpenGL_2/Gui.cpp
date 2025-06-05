@@ -47,14 +47,17 @@ void Gui::createExplosionControlWindow(Explosion& e) const
 		e.explosionTime = 0;
 	};
 
+	bool modified = false; // Were sliders below used this frame
 
 	ImGui::Text("Explosion Origin");
-	ImGui::DragFloat("X", &e.explosionOrigin.x, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Y", &e.explosionOrigin.y, 0.1f, -20.0f, 20.0f);
-	ImGui::DragFloat("Z", &e.explosionOrigin.z, 0.1f, -20.0f, 20.0f);
+	modified |= ImGui::DragFloat("X", &e.explosionOrigin.x, 0.1f, -20.0f, 20.0f);
+	modified |= ImGui::DragFloat("Y", &e.explosionOrigin.y, 0.1f, -20.0f, 20.0f);
+	modified |= ImGui::DragFloat("Z", &e.explosionOrigin.z, 0.1f, -20.0f, 20.0f);
 	ImGui::Text("Explosion Strength");
-	ImGui::SliderFloat("Strength", &e.explosionStrength, 0.0f, 50.0f);
+	modified |= ImGui::SliderFloat("Strength", &e.explosionStrength, 0.0f, 50.0f);
 	
+	e.isUpToDate = e.isUpToDate && !modified;
+
 	ImGui::End();
 }
 
