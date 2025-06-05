@@ -123,7 +123,7 @@ void OpenGLWindow::MainLoop()
 
         _explosion.updateTime(_deltaTime);
 
-        projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 100.0f);
+        projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 200.0f);
 
         viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
         explosionProgram.Activate();
