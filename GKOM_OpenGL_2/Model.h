@@ -22,11 +22,13 @@ class Model
 private:
 	inline static const fs::path _modelsDirectory = "../Resources/Models/"; // Directory where all models are stored
 
-	void processNode(aiNode* node, const aiScene* scene);
-	void processMesh(aiMesh* mesh, const aiScene* scene);
+	void processNode(aiNode* node, const aiScene* scene, aiMatrix4x4& parentTransform);
+	void processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transform);
 
 	static GLuint TextureFromFile(const fs::path& path);
 	Texture loadDiffuseTexture(aiMaterial* mat) const;
+
+	static glm::mat4 aiMatrix4x4ToGlm(const aiMatrix4x4* from);
 
 protected:
 	Model() = default;
@@ -34,7 +36,7 @@ protected:
 	fs::path _directory; // This model's directory
 
 	void loadModel(const fs::path& path);
-	virtual void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture) = 0;
+	virtual void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const glm::mat4& transform) = 0;
 
 public:
 	virtual void Draw(Program& program) const = 0;

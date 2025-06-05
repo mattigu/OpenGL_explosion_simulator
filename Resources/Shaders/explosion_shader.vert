@@ -22,8 +22,8 @@ void main()
     vs_out.Color = attrColor;
     vs_out.TextureCoords = attrTextureCoords;
 
-    mat4 modelMatrix = useInstancing ? attrInstanceMatrix : uModelMatrix;
-    vec4 worldPos = modelMatrix * vec4(attrPosition, 1.0);
+    mat4 instanceMatrix = useInstancing ? attrInstanceMatrix : mat4(1.0f);
+    vec4 worldPos = instanceMatrix * uModelMatrix * vec4(attrPosition, 1.0);
 
     vs_out.WorldPos = worldPos.xyz;
 

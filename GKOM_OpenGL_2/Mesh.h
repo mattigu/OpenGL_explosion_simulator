@@ -28,14 +28,16 @@ private:
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 protected:
 	virtual ~Mesh() = 0;
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
-		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())) {
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, glm::mat4 modelMatrix)
+		: _diffuseTexture(diffuseTexture), _modelMatrix(modelMatrix), _numIndices(static_cast<GLsizei>(indices.size())) {
 		setupMesh(vertices, indices);
 	};
 
 	GLsizei _numIndices;
 	Texture _diffuseTexture;
 	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
+
+	glm::mat4 _modelMatrix;
 
 public:
 	Texture getTexture() const { return _diffuseTexture; };

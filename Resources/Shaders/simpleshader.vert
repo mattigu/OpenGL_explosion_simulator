@@ -20,9 +20,10 @@ out VS_OUT {
 void main()
 {
     vs_out.TextureCoords = attrTextureCoords;
-    mat4 model = useInstancing ? attrInstanceMatrix : uModelMatrix;
+
+    mat4 instanceMatrix = useInstancing ? attrInstanceMatrix : mat4(1.0f);
 
     vs_out.TextureCoords = attrTextureCoords;
     vs_out.Color = attrColor;
-    gl_Position = uProjectionMatrix * uViewMatrix * model * vec4(attrPosition, 1.0);
+    gl_Position = uProjectionMatrix * uViewMatrix * instanceMatrix * uModelMatrix * vec4(attrPosition, 1.0);
 }

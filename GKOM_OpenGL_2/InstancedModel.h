@@ -3,12 +3,12 @@
 class InstancedModel : public Model
 {
 private:
-	std::vector<glm::mat4> _modelMatrices;
+	std::vector<glm::mat4> _instanceMatrices;
 	std::vector<std::shared_ptr<InstancedMesh>> _meshes;
 
-	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture) final override;
+	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const glm::mat4& transform) final override;
 public:
-	InstancedModel(const fs::path& relativePath, const std::vector<glm::mat4>& modelMatrices) :_modelMatrices(modelMatrices) {
+	InstancedModel(const fs::path& relativePath, const std::vector<glm::mat4>& instanceMatrices) :_instanceMatrices(instanceMatrices) {
 		loadModel( _directory / relativePath);
 	}
 

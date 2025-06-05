@@ -4,7 +4,10 @@ void Model::loadModel(const fs::path& path)
 {
     fs::path fullPath = _modelsDirectory / path;
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(fullPath.string(), aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+
+    unsigned int flags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs;
+
+    const aiScene* scene = importer.ReadFile(fullPath.string(), flags);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
@@ -13,25 +16,27 @@ void Model::loadModel(const fs::path& path)
     }
     _directory = fullPath.parent_path();
 
-    processNode(scene->mRootNode, scene);
+    aiMatrix4x4 identity;
+    processNode(scene->mRootNode, scene, identity);
 }
 
-void Model::processNode(aiNode* node, const aiScene* scene)
+void Model::processNode(aiNode* node, const aiScene* scene, aiMatrix4x4& parentTransform)
 {
+    aiMatrix4x4 currentTransform = parentTransform * node->mTransformation;
     // process each mesh located at the current node
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        processMesh(mesh, scene);
+        processMesh(mesh, scene, currentTransform);
     }
     // process children nodes
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        processNode(node->mChildren[i], scene);
+        processNode(node->mChildren[i], scene, currentTransform);
     }
 }
 
-void Model::processMesh(aiMesh* mesh, const aiScene* scene)
+void Model::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transform)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -87,7 +92,7 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene)
         diffuseTexture = loadDiffuseTexture(material);
     }
 
-    createMesh(vertices, indices, diffuseTexture);
+    createMesh(vertices, indices, diffuseTexture, aiMatrix4x4ToGlm(&transform));
 }
 
 Texture Model::loadDiffuseTexture(aiMaterial* mat) const
@@ -140,5 +145,17 @@ GLuint Model::TextureFromFile(const fs::path& path)
     }
 
     return textureID;
+}
+
+glm::mat4 Model::aiMatrix4x4ToGlm(const aiMatrix4x4* from)
+{
+    glm::mat4 to;
+
+    to[0][0] = (GLfloat)from->a1; to[0][1] = (GLfloat)from->b1;  to[0][2] = (GLfloat)from->c1; to[0][3] = (GLfloat)from->d1;
+    to[1][0] = (GLfloat)from->a2; to[1][1] = (GLfloat)from->b2;  to[1][2] = (GLfloat)from->c2; to[1][3] = (GLfloat)from->d2;
+    to[2][0] = (GLfloat)from->a3; to[2][1] = (GLfloat)from->b3;  to[2][2] = (GLfloat)from->c3; to[2][3] = (GLfloat)from->d3;
+    to[3][0] = (GLfloat)from->a4; to[3][1] = (GLfloat)from->b4;  to[3][2] = (GLfloat)from->c4; to[3][3] = (GLfloat)from->d4;
+
+    return to;
 }
 
