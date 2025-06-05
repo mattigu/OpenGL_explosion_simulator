@@ -94,6 +94,9 @@ void OpenGLWindow::MainLoop()
 {
     glEnable(GL_DEPTH_TEST);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     _gui->initImGui();
     RegularMesh mesh = LoadBoxMesh();
     InstancedMesh imesh = LoadBoxMeshInstanced();
@@ -101,6 +104,7 @@ void OpenGLWindow::MainLoop()
     //fs::path chiyoPath = "chiyo/chiyo.obj";
     //RegularModel rat = RegularModel(ratPath);
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
+    rat.applyTransformation(glm::scale(glm::mat4(1.0f), glm::vec3(0.01)));
 
     //RegularModel chiyo = RegularModel(chiyoPath);
     

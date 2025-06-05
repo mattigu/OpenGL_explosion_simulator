@@ -13,6 +13,7 @@ in VS_OUT {
 out GS_OUT {
     vec4 Color;
     vec2 TextureCoords;
+    float timeSinceHit;
 } gs_out;
 
 uniform bool useInstancing;
@@ -174,6 +175,7 @@ void main()
         gl_Position = uProjectionMatrix * uViewMatrix * vec4(newWorldPos, 1.0);
         gs_out.Color = gs_in[i].Color;
         gs_out.TextureCoords = gs_in[i].TextureCoords;
+        gs_out.timeSinceHit = timeSinceHit;
         EmitVertex();
     }
     EndPrimitive();
