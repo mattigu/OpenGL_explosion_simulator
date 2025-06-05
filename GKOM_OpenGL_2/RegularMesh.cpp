@@ -20,7 +20,7 @@ void RegularMesh::Draw(Program& program) const
 
 void RegularMesh::applyTransformation(const glm::mat4& transform)
 {
-    _modelMatrix = _modelMatrix * transform;
+    _modelMatrix = transform * _modelMatrix;
 }
 
 void RegularMesh::setModelMatrix(const glm::mat4& newModel)
