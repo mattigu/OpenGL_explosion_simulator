@@ -18,11 +18,6 @@ void RegularMesh::Draw(Program& program) const
     glBindVertexArray(0);
 }
 
-void RegularMesh::applyTransformation(const glm::mat4& transform)
-{
-    _modelMatrix = transform * _modelMatrix;
-}
-
 void RegularMesh::setModelMatrix(const glm::mat4& newModel)
 {
     _modelMatrix = newModel;

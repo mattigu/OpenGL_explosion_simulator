@@ -25,7 +25,6 @@ public:
 	virtual ~InstancedMesh() override;
 
 	void Draw(Program& program) const final override;
-	void applyTransformation(const glm::mat4& transform) final override;
 
 	void setInstanceMatrices(const std::vector<glm::mat4>& instanceMatrices);
 

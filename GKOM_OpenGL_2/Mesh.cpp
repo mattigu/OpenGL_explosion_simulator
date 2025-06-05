@@ -9,6 +9,11 @@ Mesh::~Mesh()
     _VAO = _VBO = _EBO = 0;
 }
 
+void Mesh::applyTransformation(const glm::mat4& transform)
+{
+    _modelMatrix = transform * _modelMatrix;
+}
+
 void Mesh::setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
 {
     glGenVertexArrays(1, &_VAO);

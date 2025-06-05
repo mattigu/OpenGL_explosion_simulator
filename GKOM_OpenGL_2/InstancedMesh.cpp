@@ -65,11 +65,6 @@ void InstancedMesh::Draw(Program& program) const
     glBindVertexArray(0);
 }
 
-void InstancedMesh::applyTransformation(const glm::mat4& transform)
-{
-    _modelMatrix = transform * _modelMatrix;
-}
-
 void InstancedMesh::setInstanceMatrices(const std::vector<glm::mat4>& instanceMatrices)
 {
     size_t oldSize = _instanceMatrices.size();
