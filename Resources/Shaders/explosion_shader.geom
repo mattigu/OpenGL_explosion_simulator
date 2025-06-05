@@ -157,13 +157,13 @@ void main()
     float timeSinceHit = abs(min(0, distToShockWave/expVelocity));
 
     vec3 direction = normalize(expVector);
-    vec3 randomNudge = vec3(randRange(seed, 0.7, 1.3), randRange(seed + 1, 0.7, 1.3), randRange(seed + 2, 0.7, 1.3));
+    vec3 randomNudge = vec3(randRange(seed, 0.8, 1.2), randRange(seed + 1, 0.8, 1.2), randRange(seed + 2, 0.8, 1.2));
 
     direction = normalize(direction * randomNudge);
 
     float ramp = smoothstep(0.0, rampTime, timeSinceHit);
 
-    float randomVelocityMult = randRange(seed, 0.8, 1.2);
+    float randomVelocityMult = randRange(seed, 0.9, 1.1);
     vec3 velocity = direction * ramp * randomVelocityMult * explosionStrength; 
     vec3 offset = calculateOffset(velocity, triangleCenter, timeSinceHit);
 
