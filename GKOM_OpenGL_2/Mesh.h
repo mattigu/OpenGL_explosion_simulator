@@ -21,8 +21,6 @@ struct Texture {
 	GLuint id = 0;
 };
 
-// A mesh with instancing requires a different setup
-
 class Mesh {
 private:
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);

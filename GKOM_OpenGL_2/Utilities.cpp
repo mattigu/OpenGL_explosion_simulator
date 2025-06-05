@@ -93,56 +93,6 @@ GLuint LoadBox(GLenum* primitive, unsigned int* count)
     colors.push_back(glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
     colors.push_back(glm::vec4(0.0f, 1.0f, 1.0f, 0.0f));
    
-    //std::vector<glm::vec3> normals;
-    //// Front face
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f,  1.0f));
-    //// Back face
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //normals.push_back(glm::vec3( 0.0f,  0.0f, -1.0f));
-    //// Top face
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f,  1.0f,  0.0f));
-    //// Bottom face
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //normals.push_back(glm::vec3( 0.0f, -1.0f,  0.0f));
-    //// Left face
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3(-1.0f,  0.0f,  0.0f));
-    //// Right face
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-    //normals.push_back(glm::vec3( 1.0f,  0.0f,  0.0f));
-
-    //struct Vertex
-    //{
-    //    glm::vec3 position;
-    //    glm::vec3 color;
-    //    glm::vec2 textCoords;
-    //};
 
     std::vector<Vertex> BufferData;
 
@@ -175,142 +125,16 @@ GLuint LoadBox(GLenum* primitive, unsigned int* count)
 
 RegularMesh LoadBoxMesh()
 {
-    // Temporary ugly function to test if meshes work
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-
-    glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-    glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-    glm::vec4 blue = glm::vec4(0.0f, 0.0f, 1.0f, 0.0f);
-
-    glm::vec2 uv00 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 uv01 = glm::vec2(0.0f, 1.0f);
-    glm::vec2 uv10 = glm::vec2(1.0f, 0.0f);
-    glm::vec2 uv11 = glm::vec2(1.0f, 1.0f);
-
-    // FRONT FACE (+Z)
-    glm::vec3 normalFront = glm::vec3(0.0f, 0.0f, 1.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalFront, red, uv00)); // 0
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalFront, red, uv10)); // 1
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalFront, red, uv11)); // 2
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalFront, red, uv01)); // 3
-
-    // BACK FACE (-Z)
-    glm::vec3 normalBack = glm::vec3(0.0f, 0.0f, -1.0f);
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalBack, green, uv00)); // 4
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalBack, green, uv10)); // 5
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalBack, green, uv11)); // 6
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalBack, green, uv01)); // 7
-
-    // RIGHT FACE (+X)
-    glm::vec3 normalRight = glm::vec3(1.0f, 0.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalRight, blue, uv00));  // 8
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalRight, blue, uv10)); // 9
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalRight, blue, uv11)); // 10
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalRight, blue, uv01)); // 11
-
-    // LEFT FACE (-X)
-    glm::vec3 normalLeft = glm::vec3(-1.0f, 0.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalLeft, red, uv00));  // 12
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalLeft, red, uv10));  // 13
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalLeft, red, uv11));  // 14
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalLeft, red, uv01));  // 15
-
-    // TOP FACE (+Y)
-    glm::vec3 normalTop = glm::vec3(0.0f, 1.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalTop, green, uv00));  // 16
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalTop, green, uv10));  // 17
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalTop, green, uv11));  // 18
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalTop, green, uv01));  // 19
-
-    // BOTTOM FACE (-Y)
-    glm::vec3 normalBottom = glm::vec3(0.0f, -1.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalBottom, blue, uv00)); // 20
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalBottom, blue, uv10)); // 21
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalBottom, blue, uv11)); // 22
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalBottom, blue, uv01)); // 23
-
-    // Add indices for each face (two triangles per face)
-    for (int i = 0; i < 6; ++i) {
-        unsigned int base = i * 4;
-        indices.insert(indices.end(), {
-            base + 0, base + 1, base + 2,
-            base + 0, base + 2, base + 3
-            });
-    }
     Texture text;
-    RegularMesh mesh(vertices, indices, text);
+    RegularMesh mesh(getBoxVertices(), getBoxIndices(), text);
     return mesh;
 }
 
 InstancedMesh LoadBoxMeshInstanced()
 {
-    // Temporary ugly function to test if meshes work
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-
-    glm::vec4 red = glm::vec4(1.0f, 0.0f, 0.0f, 0.0f);
-    glm::vec4 green = glm::vec4(0.0f, 1.0f, 0.0f, 0.0f);
-    glm::vec4 blue = glm::vec4(0.0f, 0.0f, 1.0f, 0.0f);
-
-    glm::vec2 uv00 = glm::vec2(0.0f, 0.0f);
-    glm::vec2 uv01 = glm::vec2(0.0f, 1.0f);
-    glm::vec2 uv10 = glm::vec2(1.0f, 0.0f);
-    glm::vec2 uv11 = glm::vec2(1.0f, 1.0f);
-
-    // FRONT FACE (+Z)
-    glm::vec3 normalFront = glm::vec3(0.0f, 0.0f, 1.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalFront, red, uv00)); // 0
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalFront, red, uv10)); // 1
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalFront, red, uv11)); // 2
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalFront, red, uv01)); // 3
-
-    // BACK FACE (-Z)
-    glm::vec3 normalBack = glm::vec3(0.0f, 0.0f, -1.0f);
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalBack, green, uv00)); // 4
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalBack, green, uv10)); // 5
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalBack, green, uv11)); // 6
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalBack, green, uv01)); // 7
-
-    // RIGHT FACE (+X)
-    glm::vec3 normalRight = glm::vec3(1.0f, 0.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalRight, blue, uv00));  // 8
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalRight, blue, uv10)); // 9
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalRight, blue, uv11)); // 10
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalRight, blue, uv01)); // 11
-
-    // LEFT FACE (-X)
-    glm::vec3 normalLeft = glm::vec3(-1.0f, 0.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalLeft, red, uv00));  // 12
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalLeft, red, uv10));  // 13
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalLeft, red, uv11));  // 14
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalLeft, red, uv01));  // 15
-
-    // TOP FACE (+Y)
-    glm::vec3 normalTop = glm::vec3(0.0f, 1.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, 1, 1), normalTop, green, uv00));  // 16
-    vertices.push_back(Vertex(glm::vec3(1, 1, 1), normalTop, green, uv10));  // 17
-    vertices.push_back(Vertex(glm::vec3(1, 1, -1), normalTop, green, uv11));  // 18
-    vertices.push_back(Vertex(glm::vec3(-1, 1, -1), normalTop, green, uv01));  // 19
-
-    // BOTTOM FACE (-Y)
-    glm::vec3 normalBottom = glm::vec3(0.0f, -1.0f, 0.0f);
-    vertices.push_back(Vertex(glm::vec3(-1, -1, -1), normalBottom, blue, uv00)); // 20
-    vertices.push_back(Vertex(glm::vec3(1, -1, -1), normalBottom, blue, uv10)); // 21
-    vertices.push_back(Vertex(glm::vec3(1, -1, 1), normalBottom, blue, uv11)); // 22
-    vertices.push_back(Vertex(glm::vec3(-1, -1, 1), normalBottom, blue, uv01)); // 23
-
-    // Add indices for each face (two triangles per face)
-    for (int i = 0; i < 6; ++i) {
-        unsigned int base = i * 4;
-        indices.insert(indices.end(), {
-            base + 0, base + 1, base + 2,
-            base + 0, base + 2, base + 3
-            });
-    }
 
     Texture text;
-    InstancedMesh mesh(vertices, indices, text, getSampleInstanceMatrices());
+    InstancedMesh mesh(getBoxVertices(), getBoxIndices(), text, getSampleInstanceMatrices());
     return mesh;
 }
 
@@ -341,4 +165,77 @@ std::vector<glm::mat4> getSampleInstanceMatricesCube(int size)
         }
     }
     return instanceMatrices;
+}
+
+std::vector<Vertex> getBoxVertices()
+{
+    std::vector<Vertex> vertices = {
+        // Front face (red)
+        {{ 1.0f,  1.0f,  1.0f}, {}, {1, 0, 0, 1}, {}},
+        {{-1.0f,  1.0f,  1.0f}, {}, {1, 0, 0, 1}, {}},
+        {{-1.0f, -1.0f,  1.0f}, {}, {1, 0, 0, 1}, {}},
+        {{ 1.0f, -1.0f,  1.0f}, {}, {1, 0, 0, 1}, {}},
+
+        // Back face (green)
+        {{ 1.0f, -1.0f, -1.0f}, {}, {0, 1, 0, 1}, {}},
+        {{-1.0f, -1.0f, -1.0f}, {}, {0, 1, 0, 1}, {}},
+        {{-1.0f,  1.0f, -1.0f}, {}, {0, 1, 0, 1}, {}},
+        {{ 1.0f,  1.0f, -1.0f}, {}, {0, 1, 0, 1}, {}},
+
+        // Top face (blue)
+        {{ 1.0f,  1.0f, -1.0f}, {}, {0, 0, 1, 1}, {}},
+        {{-1.0f,  1.0f, -1.0f}, {}, {0, 0, 1, 1}, {}},
+        {{-1.0f,  1.0f,  1.0f}, {}, {0, 0, 1, 1}, {}},
+        {{ 1.0f,  1.0f,  1.0f}, {}, {0, 0, 1, 1}, {}},
+
+        // Bottom face (yellow)
+        {{ 1.0f, -1.0f,  1.0f}, {}, {1, 1, 0, 1}, {}},
+        {{-1.0f, -1.0f,  1.0f}, {}, {1, 1, 0, 1}, {}},
+        {{-1.0f, -1.0f, -1.0f}, {}, {1, 1, 0, 1}, {}},
+        {{ 1.0f, -1.0f, -1.0f}, {}, {1, 1, 0, 1}, {}},
+
+        // Left face (magenta)
+        {{-1.0f,  1.0f,  1.0f}, {}, {1, 0, 1, 1}, {}},
+        {{-1.0f,  1.0f, -1.0f}, {}, {1, 0, 1, 1}, {}},
+        {{-1.0f, -1.0f, -1.0f}, {}, {1, 0, 1, 1}, {}},
+        {{-1.0f, -1.0f,  1.0f}, {}, {1, 0, 1, 1}, {}},
+
+        // Right face (cyan)
+        {{ 1.0f,  1.0f, -1.0f}, {}, {0, 1, 1, 1}, {}},
+        {{ 1.0f,  1.0f,  1.0f}, {}, {0, 1, 1, 1}, {}},
+        {{ 1.0f, -1.0f,  1.0f}, {}, {0, 1, 1, 1}, {}},
+        {{ 1.0f, -1.0f, -1.0f}, {}, {0, 1, 1, 1}, {}},
+    };
+    return vertices;
+}
+
+std::vector<unsigned int> getBoxIndices()
+{
+    std::vector<GLuint> indices = {
+        // Front
+        0, 1, 2,
+        0, 2, 3,
+
+        // Back
+        4, 5, 6,
+        4, 6, 7,
+
+        // Top
+        8, 9,10,
+        8,10,11,
+
+        // Bottom
+       12,13,14,
+       12,14,15,
+
+       // Left
+      16,17,18,
+      16,18,19,
+
+      // Right
+     20,21,22,
+     20,22,23,
+    };
+
+    return indices;
 }

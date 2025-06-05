@@ -23,12 +23,8 @@ OpenGLWindow::OpenGLWindow()
     _deltaTime = 0;
     _vsyncEnabled = false;
 
-    objectVAO = 0;
-    objectVAOPrimitive = 0;
-    objectVAOVertexCount = 0;
-
-    windowResolution = glm::vec2(800, 600);
-    fieldOfView = 60;
+    _windowResolution = glm::vec2(800, 600);
+    _fieldOfView = 60;
 
     _camera = std::make_unique<Camera>(glm::vec3(0, 0, 20), glm::vec3(0, 0, -1), glm::vec3(0, 1, 0));
 }
@@ -50,7 +46,7 @@ bool OpenGLWindow::InitWindow()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    _window = glfwCreateWindow((int)windowResolution.x, (int)windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
+    _window = glfwCreateWindow((int)_windowResolution.x, (int)_windowResolution.y, "GKOM_OpenGL_2", NULL, NULL);
     glfwSetWindowAspectRatio(_window, 4, 3);
     glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(_window, mouse_callback);
@@ -80,14 +76,13 @@ bool OpenGLWindow::InitWindow()
 void OpenGLWindow::InitGui()
 {
     _gui = std::make_unique<Gui>(_window);
+    _gui->initImGui();
 }
 
 void OpenGLWindow::InitScene()
 {
     explosionProgram.Load("explosion_shader.vert", "explosion_shader.frag", "explosion_shader.geom");
     staticProgram.Load("simpleshader.vert", "simpleshader.frag");
-
-    objectVAO = LoadBox(&objectVAOPrimitive, &objectVAOVertexCount);
 }
 
 void OpenGLWindow::MainLoop()
@@ -97,16 +92,12 @@ void OpenGLWindow::MainLoop()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    _gui->initImGui();
-    RegularMesh mesh = LoadBoxMesh();
-    InstancedMesh imesh = LoadBoxMeshInstanced();
+    RegularMesh explosionPoint = LoadBoxMesh();
+    InstancedMesh boxes = LoadBoxMeshInstanced();
     fs::path ratPath = "RAT/RAT.fbx";
-    //fs::path chiyoPath = "chiyo/chiyo.obj";
-    //RegularModel rat = RegularModel(ratPath);
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
     rat.applyTransformation(glm::scale(glm::mat4(1.0f), glm::vec3(0.01)));
 
-    //RegularModel chiyo = RegularModel(chiyoPath);
     
     while (!glfwWindowShouldClose(_window))
     {
@@ -118,62 +109,41 @@ void OpenGLWindow::MainLoop()
         _gui->startNewFrame();
         _gui->createExplosionControlWindow(_explosion);
         
-        int triangleCount = rat.getTriangleCount();
-        _gui->createPerformanceOverlay(triangleCount);
-
+        _gui->createPerformanceOverlay(0);
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         _explosion.updateTime(_deltaTime);
 
-        projectionMatrix = glm::perspective(glm::radians(fieldOfView), windowResolution.x / windowResolution.y, 0.1f, 200.0f);
+        _projectionMatrix = glm::perspective(glm::radians(_fieldOfView), _windowResolution.x / _windowResolution.y, 0.1f, 200.0f);
 
-        viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
+        _viewMatrix = glm::lookAt(_camera->getPosition(), _camera->getPosition() + _camera->getDirection(), _camera->getUp());
+
         explosionProgram.Activate();
 
-        glUniform1i(explosionProgram.GetUniformID("useTexture"), 0); // Temporary until textures fully implemented
         glUniform3fv(explosionProgram.GetUniformID("explosionOrigin"), 1, glm::value_ptr(_explosion.explosionOrigin));
         glUniform1f(explosionProgram.GetUniformID("explosionTime"), _explosion.explosionTime);
         glUniform1f(explosionProgram.GetUniformID("explosionStrength"), _explosion.explosionStrength);
-        glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-        glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(_viewMatrix));
+        glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_projectionMatrix));
     
-        for (int i = -2; i <= 2; i++)
-        {
-            for (int j = -2; j <= 2; j++)
-            {
-                modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(i * 3.0f, j * 3.0f, 0.0f));
-
-                glUniformMatrix4fv(explosionProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-
-                glBindVertexArray(objectVAO);
-                glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
-
-                // Draw with the mesh class.
-                //mesh.setModelMatrix(modelMatrix);
-                //mesh.Draw(explosionProgram); 
-            }
-        }
-        // Draw instanced
-        //imesh.Draw(explosionProgram);
-        // Draw loaded models
         rat.Draw(explosionProgram);
-        //chiyo.Draw(explosionProgram);
+        boxes.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();
+
+        glUniformMatrix4fv(staticProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(_viewMatrix));
+        glUniformMatrix4fv(staticProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_projectionMatrix));
+
         float explosionOriginScale = 0.3f;
 
-        modelMatrix = glm::translate(glm::mat4(1.0f), _explosion.explosionOrigin);
+        glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), _explosion.explosionOrigin);
         modelMatrix = glm::scale(modelMatrix, glm::vec3(explosionOriginScale));
 
-        glUniformMatrix4fv(staticProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-        glUniformMatrix4fv(staticProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-        glUniformMatrix4fv(staticProgram.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-
-        glBindVertexArray(objectVAO);
-        glDrawArrays(objectVAOPrimitive, 0, objectVAOVertexCount);
+        explosionPoint.setModelMatrix(modelMatrix);
+        explosionPoint.Draw(staticProgram);
 
         _gui->renderGui();
 

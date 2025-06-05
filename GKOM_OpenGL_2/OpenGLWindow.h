@@ -51,15 +51,10 @@ private:
 
 	Explosion _explosion;
 
-	GLuint objectVAO;
-	GLenum objectVAOPrimitive;
-	unsigned int objectVAOVertexCount;
+	glm::vec2 _windowResolution;
+	float _fieldOfView;
 
-	glm::vec2 windowResolution;
-	float fieldOfView;
-
-	glm::mat4 projectionMatrix;
-	glm::mat4 viewMatrix;
-	glm::mat4 modelMatrix;
+	glm::mat4 _projectionMatrix;
+	glm::mat4 _viewMatrix;
 
 };

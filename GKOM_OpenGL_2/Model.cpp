@@ -61,7 +61,7 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transfo
             vertex.Normal = vector;
         }
 
-        if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+        if (mesh->mTextureCoords[0])
         {
             glm::vec2 vec;
 
@@ -75,7 +75,7 @@ void Model::processMesh(aiMesh* mesh, const aiScene* scene, aiMatrix4x4& transfo
 
         vertices.push_back(vertex);
     }
-    // get indices for each face
+
     for (unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];

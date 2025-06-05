@@ -47,7 +47,7 @@ void InstancedMesh::remakeInstanceVBO() const
 
 void InstancedMesh::Draw(Program& program) const
 {
-    if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
+    if (_diffuseTexture.id != 0) {
         glUniform1i(program.GetUniformID("useTexture"), 1);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture.id);
