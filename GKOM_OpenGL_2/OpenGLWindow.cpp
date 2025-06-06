@@ -100,6 +100,9 @@ void OpenGLWindow::MainLoop()
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
     rat.applyTransformation(glm::scale(glm::mat4(1.0f), glm::vec3(0.01)));
 
+    //RegularModel winter(fs::path("winter/scene.gltf"));
+
+    int triangles = rat.getTriangleCount();
     
     while (!glfwWindowShouldClose(_window))
     {
@@ -110,8 +113,7 @@ void OpenGLWindow::MainLoop()
 
         _gui->startNewFrame();
         _gui->createExplosionControlWindow(_explosion);
-        
-        _gui->createPerformanceOverlay(0);
+        _gui->createPerformanceOverlay(triangles);
 
         glClearColor(0.1, 0.2f, 0.3f, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -132,8 +134,9 @@ void OpenGLWindow::MainLoop()
         glUniformMatrix4fv(explosionProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(_viewMatrix));
         glUniformMatrix4fv(explosionProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_projectionMatrix));
 
-        rat.Draw(explosionProgram);
+        //rat.Draw(explosionProgram);
         boxes.Draw(explosionProgram);
+        //winter.Draw(explosionProgram);
         
         // Draw point marking the explosion origin
         staticProgram.Activate();

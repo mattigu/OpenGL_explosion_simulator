@@ -1,8 +1,15 @@
-#version 330 core
+#version 420 core
 
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
+//layout (std140, binding = 1) uniform Explosion 
+//{
+uniform vec3 explosionOrigin;
+uniform float explosionTime;
+uniform float explosionStrength;
+    //float explosionSpeed;
+//};
 
 in VS_OUT {
     vec4 Color;
@@ -17,10 +24,6 @@ out GS_OUT {
 } gs_out;
 
 uniform bool useInstancing;
-
-uniform float explosionTime;
-uniform vec3 explosionOrigin;
-uniform float explosionStrength;
 
 uniform mat4 uModelMatrix;
 uniform mat4 uViewMatrix;
