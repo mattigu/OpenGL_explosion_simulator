@@ -89,27 +89,6 @@ vec3 calculateOffset(vec3 velocity, vec3 point, float time)
     return offset;
 }
 
-//vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, float id)
-//{ 
-//    float angularVelocity = baseAngularVelocity * (rand(id)*2 - 1);
-//    float angularAcceleration = -sign(angularVelocity) * baseAngularAccel;
-//
-//    float stopTime = abs(angularVelocity / angularAcceleration);
-//    float t = clamp(time, 0.0, stopTime);
-//
-//    float angle = angularVelocity * t + 0.5 * angularAcceleration * t * t;      
-//
-//    vec3 p = point - triangleCenter; // translate for rotation
-//
-//    mat3 rotation = rotationZ(angle) * rotationZ(angle) * rotationX(angle);
-//
-//    vec3 rotatedPoint = rotation * p + triangleCenter;
-//
-//    return rotatedPoint;
-//}
-
-//This version has unique velocities per angle, but is significantly less performant. 
-//One axis could be removed without much visual loss though.
 vec3 rotatePoint (vec3 point, vec3 triangleCenter, vec3 expDir, float time, float id)
 { 
     vec3 axisX = vec3(1.0, 0.0, 0.0);
