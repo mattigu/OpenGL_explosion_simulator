@@ -130,6 +130,13 @@ RegularMesh LoadBoxMesh()
     return mesh;
 }
 
+RegularMesh LoadSphereMesh(glm::vec4 color)
+{
+    Texture text;
+    RegularMesh mesh(getSphereVertices(color), getSphereIndices(), text);
+    return mesh;
+}
+
 InstancedMesh LoadBoxMeshInstanced()
 {
 
@@ -237,5 +244,69 @@ std::vector<unsigned int> getBoxIndices()
      20,22,23,
     };
 
+    return indices;
+}
+
+std::vector<Vertex> getSphereVertices(glm::vec4 color)
+{
+    std::vector<Vertex> vertices;
+
+    unsigned int res = 100;
+    float circleStep = glm::two_pi<float>() / (float)res;
+    float heightStep = glm::pi<float>() / (float)res;
+
+    int row = 0;
+
+    float phi = -glm::half_pi<float>();
+    float y = glm::sin(phi);
+    float radius;
+
+    for (; phi < glm::half_pi<float>() + heightStep; phi += heightStep, row++)
+    {
+        y = glm::sin(phi);
+        radius = glm::cos(phi);
+        int cell = 0;
+
+        for (float th = 0; th < glm::two_pi<float>(); cell++) 
+        {
+            th += circleStep;
+            vertices.push_back({ {radius * glm::cos(th), y, radius * glm::sin(th)}, {}, color , {} });
+        }
+    }
+    return vertices;
+}
+
+std::vector<unsigned int> getSphereIndices() 
+{
+    std::vector<GLuint> indices;
+    int noVertices = 0;
+
+    unsigned int res = 100;
+    float circleStep = glm::two_pi<float>() / (float)res;
+    float heightStep = glm::pi<float>() / (float)res;
+
+    int row = 0;
+
+    float phi = -glm::half_pi<float>();
+    float y = glm::sin(phi);
+    float radius;
+
+    for (; phi < glm::half_pi<float>() + heightStep; phi += heightStep, row++) {
+        int cell = 0;
+        for (float th = 0; th < glm::two_pi<float>(); th += circleStep, cell++) {
+            if (row)
+            {
+                int nextCell = (cell + 1) % res;
+                indices.push_back(noVertices - res); // bottom left
+                indices.push_back((row - 1) * res + nextCell); // bottom right
+                indices.push_back(row * res + nextCell); // top right
+
+                indices.push_back(noVertices - res); // bottom left
+                indices.push_back(noVertices); // top left (this vertex)
+                indices.push_back(row * res + nextCell); // top right
+            }
+            noVertices++;
+        }
+    }
     return indices;
 }

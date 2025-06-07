@@ -94,7 +94,9 @@ void OpenGLWindow::MainLoop()
 
     //ExplosionUBuffer explosionBuffer(_explosion);
 
-    RegularMesh explosionPoint = LoadBoxMesh();
+    //RegularMesh explosionPoint = LoadBoxMesh();
+    RegularMesh explosionPoint = LoadSphereMesh({ 0, 1, 1, 0.2 });
+
     InstancedMesh boxes = LoadBoxMeshInstanced();
     fs::path ratPath = "RAT/RAT.fbx";
     InstancedModel rat = InstancedModel(ratPath, getSampleInstanceMatrices());
@@ -103,7 +105,9 @@ void OpenGLWindow::MainLoop()
     //RegularModel winter(fs::path("winter/scene.gltf"));
 
     int triangles = rat.getTriangleCount();
-    
+
+    float expVelocity = 5.0;
+
     while (!glfwWindowShouldClose(_window))
     {
         updateDeltaTime();
@@ -144,7 +148,8 @@ void OpenGLWindow::MainLoop()
         glUniformMatrix4fv(staticProgram.GetUniformID("uViewMatrix"), 1, GL_FALSE, glm::value_ptr(_viewMatrix));
         glUniformMatrix4fv(staticProgram.GetUniformID("uProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(_projectionMatrix));
 
-        float explosionOriginScale = 0.3f;
+        // scales size of the sphere with size of explosion
+        float explosionOriginScale = _explosion.explosionTime * expVelocity;
 
         glm::mat4 modelMatrix = glm::translate(glm::mat4(1.0f), _explosion.explosionOrigin);
         modelMatrix = glm::scale(modelMatrix, glm::vec3(explosionOriginScale));

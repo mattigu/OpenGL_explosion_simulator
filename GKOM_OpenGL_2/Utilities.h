@@ -16,3 +16,7 @@ std::vector<glm::mat4> getSampleInstanceMatrices();
 std::vector<glm::mat4> getSampleInstanceMatricesCube(int size);
 std::vector<Vertex> getBoxVertices();
 std::vector<unsigned int> getBoxIndices();
+
+RegularMesh LoadSphereMesh(glm::vec4 color);
+std::vector<Vertex> getSphereVertices(glm::vec4 color);
+std::vector<unsigned int> getSphereIndices();
