@@ -12,7 +12,7 @@ void InstancedMesh::setupInstancing()
 
     glGenBuffers(1, &_instanceVBO);
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], _instanceBufferType);
+    glBufferData(GL_ARRAY_BUFFER, _instanceMatrices.size() * sizeof(glm::mat4), &_instanceMatrices[0], _instanceBufferType);
 
     glBindVertexArray(_VAO);
     // set attribute pointers for matrix (4 times vec4)
@@ -36,18 +36,18 @@ void InstancedMesh::setupInstancing()
 void InstancedMesh::updateInstanceVBO() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0]);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, _instanceMatrices.size() * sizeof(glm::mat4), &_instanceMatrices[0]);
 }
 
 void InstancedMesh::remakeInstanceVBO() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, _instanceVBO);
-    glBufferData(GL_ARRAY_BUFFER, _modelMatrices.size() * sizeof(glm::mat4), &_modelMatrices[0], _instanceBufferType);
+    glBufferData(GL_ARRAY_BUFFER, _instanceMatrices.size() * sizeof(glm::mat4), &_instanceMatrices[0], _instanceBufferType);
 }
 
 void InstancedMesh::Draw(Program& program) const
 {
-    if (_diffuseTexture.id != 0) { // 0 when texture is not loaded
+    if (_diffuseTexture.id != 0) {
         glUniform1i(program.GetUniformID("useTexture"), 1);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _diffuseTexture.id);
@@ -55,28 +55,22 @@ void InstancedMesh::Draw(Program& program) const
     }
     glUniform1i(program.GetUniformID("useInstancing"), 1);
 
+    glUniformMatrix4fv(program.GetUniformID("uModelMatrix"), 1, GL_FALSE, glm::value_ptr(_modelMatrix));
+
     glBindVertexArray(_VAO);
-    glDrawElementsInstanced(GL_TRIANGLES, _numIndices, GL_UNSIGNED_INT, 0, _modelMatrices.size());
+    glDrawElementsInstanced(GL_TRIANGLES, _numIndices, GL_UNSIGNED_INT, 0, _instanceMatrices.size());
 
     glUniform1i(program.GetUniformID("useTexture"), 0);
     glUniform1i(program.GetUniformID("useInstancing"), 0);
     glBindVertexArray(0);
 }
 
-void InstancedMesh::applyTransformation(const glm::mat4& transform)
+void InstancedMesh::setInstanceMatrices(const std::vector<glm::mat4>& instanceMatrices)
 {
-    for (auto& m : _modelMatrices) {
-        m = transform * m;
-    }
-    updateInstanceVBO();
-}
+    size_t oldSize = _instanceMatrices.size();
+    size_t newSize = instanceMatrices.size();
 
-void InstancedMesh::setModelMatrices(const std::vector<glm::mat4>& modelMatrices)
-{
-    size_t oldSize = _modelMatrices.size();
-    size_t newSize = modelMatrices.size();
-
-    _modelMatrices = modelMatrices;
+    _instanceMatrices = instanceMatrices;
 
     if (newSize <= oldSize) { 
         updateInstanceVBO();

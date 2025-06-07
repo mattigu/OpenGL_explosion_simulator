@@ -1,5 +1,5 @@
 #include "MatricesUBuffer.h"
 
-void MatricesUBuffer::updateUniforms()
+void MatricesUBuffer::updateUniforms() const
 {
 }

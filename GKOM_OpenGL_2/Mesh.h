@@ -21,15 +21,13 @@ struct Texture {
 	GLuint id = 0;
 };
 
-// A mesh with instancing requires a different setup
-
 class Mesh {
 private:
 	void setupMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 protected:
 	virtual ~Mesh() = 0;
-	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture)
-		: _diffuseTexture(diffuseTexture), _numIndices(static_cast<GLsizei>(indices.size())) {
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, Texture diffuseTexture, glm::mat4 modelMatrix)
+		: _diffuseTexture(diffuseTexture), _modelMatrix(modelMatrix), _numIndices(static_cast<GLsizei>(indices.size())) {
 		setupMesh(vertices, indices);
 	};
 
@@ -37,11 +35,14 @@ protected:
 	Texture _diffuseTexture;
 	GLuint _VBO = 0, _EBO = 0, _VAO = 0;
 
+	glm::mat4 _modelMatrix;
+
 public:
 	Texture getTexture() const { return _diffuseTexture; };
 	GLsizei getNumIndices() const { return _numIndices; };
 
+	void applyTransformation(const glm::mat4& transform);
+
 	virtual void Draw(Program& program) const = 0;
-	virtual void applyTransformation(const glm::mat4& transform) = 0;
 	virtual int getTriangleCount() const = 0;
 };

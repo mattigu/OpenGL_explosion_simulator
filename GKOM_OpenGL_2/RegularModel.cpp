@@ -1,8 +1,9 @@
 #include "RegularModel.h"
 
-void RegularModel::createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
+void RegularModel::createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const glm::mat4& transform)
 {
-	_meshes.push_back(std::make_shared<RegularMesh>(vertices, indices, diffuseTexture));
+	auto mesh = std::make_shared<RegularMesh>(vertices, indices, diffuseTexture, transform);
+	_meshes.push_back(mesh);
 }
 
 void RegularModel::Draw(Program& program) const

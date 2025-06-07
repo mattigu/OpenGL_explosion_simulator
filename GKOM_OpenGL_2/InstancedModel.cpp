@@ -1,8 +1,9 @@
 #include "InstancedModel.h"
 
-void InstancedModel::createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture)
+void InstancedModel::createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const glm::mat4& transform)
 {
-	_meshes.push_back(std::make_shared<InstancedMesh>(vertices, indices, diffuseTexture, _modelMatrices));
+	auto mesh = std::make_shared<InstancedMesh>(vertices, indices, diffuseTexture, _instanceMatrices, transform);
+	_meshes.push_back(mesh);
 }
 
 void InstancedModel::Draw(Program& program) const

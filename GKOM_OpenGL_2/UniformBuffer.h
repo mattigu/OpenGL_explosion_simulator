@@ -10,7 +10,7 @@ private:
 
 protected:
 	GLuint _bindingPoint;
-	GLuint _buffer;
+	GLuint _UBO;
 	GLsizei _bufferSize;
 	
 	UniformBuffer(GLuint bindingBlock, GLsizei bufferSize) : _bindingPoint(bindingBlock), _bufferSize(bufferSize) {
@@ -19,5 +19,5 @@ protected:
 	~UniformBuffer();
 
 public:
-	virtual void updateUniforms() = 0;
+	virtual void updateUniforms() const = 0;
 };

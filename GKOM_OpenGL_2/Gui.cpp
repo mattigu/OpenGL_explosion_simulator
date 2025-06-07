@@ -37,7 +37,7 @@ void Gui::createExplosionControlWindow(Explosion& e) const
 	ImGui::Begin("Explosion effects");
 
 	ImGui::Text("Simulation speed");
-	ImGui::SliderFloat("##Simulation speed", &e.simulationSpeed, -10.f, 10.f);
+	ImGui::SliderFloat("##Simulation speed", &e.simulationSpeed, -4.f, 4.f);
 
 	if (ImGui::Button(e.paused ? "Resume" : "Pause")) {
 		e.togglePause();
@@ -55,6 +55,7 @@ void Gui::createExplosionControlWindow(Explosion& e) const
 	ImGui::Text("Explosion Strength");
 	ImGui::SliderFloat("Strength", &e.explosionStrength, 0.0f, 50.0f);
 	
+
 	ImGui::End();
 }
 

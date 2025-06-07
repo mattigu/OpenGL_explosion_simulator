@@ -6,14 +6,14 @@ class RegularModel : public Model
 private:
 	std::vector<std::shared_ptr<RegularMesh>> _meshes;
 
-	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture) final override;
+	void createMesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices, const Texture& diffuseTexture, const glm::mat4& transform) final override;
 public:
 	RegularModel(const fs::path& relativePath) {
 		loadModel(_directory / relativePath); 
 	};
 
 	void Draw(Program& program) const final override;
-	//void setModelMatrix(const glm::mat4& newModel);
+
 	void applyTransformation(const glm::mat4& transform) final override;
 	int getTriangleCount() const final override;
 };

@@ -1,5 +1,8 @@
 #include "Explosion.h"
 
+#include <algorithm>
+
+
 bool Explosion::togglePause()
 {
     return paused = !paused;
@@ -7,6 +10,6 @@ bool Explosion::togglePause()
 
 void Explosion::updateTime(float deltaTime) {
     if (!paused) {
-        explosionTime += deltaTime * simulationSpeed;
+        explosionTime = std::max(0.0f, explosionTime + deltaTime * simulationSpeed);
     }
 }
