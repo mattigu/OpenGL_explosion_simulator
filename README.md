@@ -33,6 +33,8 @@ It's also possible to control many more variables by modifying the const paramet
     const float baseAngularAccel = 0.4;
 
 ### Examples
+Recently added explosion graphics.
+![alt text](gifs/triangles2.gif)
 ![alt text](gifs/triangles.gif)
 ![alt text](gifs/rats.gif)
 ![alt text](gifs/scene.gif)
